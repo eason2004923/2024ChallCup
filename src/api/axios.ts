@@ -6,7 +6,7 @@ const Axios = axios.create({
   timeout: 10000000000000000000000000000000000000000000000000000000000000000000000000000, // 请求超时时间
   headers: {
     'Content-Type': 'application/json',
-    // 可以在这里添加更多默认头部信息
+
   }
 });
 
