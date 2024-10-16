@@ -1,0 +1,100 @@
+/*header区显示*/
+header {
+  background-color: #333;
+  color: white;
+  padding: 25px 25px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+header h1 {
+  text-align: center;
+  margin: 0;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+/* Navigation styles */
+.introduction nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.introduction nav ul li {
+  display: flex;
+  align-items: center;
+  margin: 10px 20px;
+}
+
+.introduction nav ul li a {
+  text-decoration: none;
+  color: rgb(105, 105, 105);
+  transition: color 0.3s;
+}
+
+.introduction nav ul li a:hover {
+  color: #97ea7b;
+}
+
+.introduction nav ul li p {
+  padding-left: 3px;
+  color: rgb(105, 105, 105);
+}
+
+.introduction p {
+  text-align: center;
+  padding: 3rem;
+}
+
+/*footer区显示*/
+footer {
+  background-color: #314584;
+  color: white;
+  text-align: center;
+  padding: 20px 20px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+footer h2,
+footer h3 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto; /* 将列表居中 */
+  display: flex;
+  justify-content: center; /* 使列表项居中对齐 */
+  margin-bottom: 10px;
+}
+
+footer ul li {
+  margin: 0 10px; /* 为每个列表项添加左右外边距 */
+}
+
+footer ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+footer ul li a:hover {
+  color: #e0ee8b;
+}
+
+footer p {
+  font-size: 0.85em;
+  margin-top: 20px;
+  color: #cccccc;
+}
