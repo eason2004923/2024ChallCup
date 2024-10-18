@@ -4,10 +4,7 @@ import axios from 'axios';
 const Axios = axios.create({
   baseURL: 'http://121.41.52.142:5090', // 设置API的基础URL
   timeout: 10000000000000000000000000000000000000000000000000000000000000000000000000000, // 请求超时时间
-  headers: {
-    'Content-Type': 'application/json',
-    // 可以在这里添加更多默认头部信息
-  }
+
 });
 
 // 请求拦截器

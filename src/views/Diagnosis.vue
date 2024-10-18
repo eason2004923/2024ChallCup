@@ -16,7 +16,7 @@
           <br />
           <el-button :plain="true" @click="submitPath">submit</el-button>
           <el-button class="button1" @click="drawChart">绘图</el-button>
-          <ImportFile ref="RefFile_csv" @getFile="getFileMess" />
+          <ImportFile ref="RefFile_csv" @getFile="getFileName" />
         </div>
       </div>
     </div>
@@ -119,73 +119,20 @@ const progress = ref(0) // 定义进度变量
 const openForm = (tool: string) => {
   RefFile_csv.value.open(tool)
 }
-// 获取文件
-const getFileMess = (tool: any, fPath: any) => {
-  console.log(tool, fPath)
-  fileName.value = tool.name
-  filePath.value = fPath
-  progress.value = 25
+// 获取文件名
+const getFileName = async (tool) => {
+  console.log(tool)
+  fileName.value = tool
 }
-// const submitPath = async () => {
-//   try {
-//     let res_csv, res_loom, res_tsv
-
-//     if (filePath.value.endsWith('.csv')) {
-//       // 提交 CSV 文件
-//       res_csv = await FileApi.exportCsv(filePath.value)
-//       console.log('CSV Response:', res_csv)
-
-//       // 提交 Loom 文件
-//       res_loom = await FileApi.exportLoom(res_csv.data.data)
-//       console.log('Loom Response:', res_loom)
-
-//       // 检查 Loom 文件的响应
-//       if (res_loom.data && res_loom.data.code === 0) {
-//         // 提交 TSV 文件
-//         res_tsv = await FileApi.exportTsv(TsvPath.value)
-//         console.log('TSV Response:', res_tsv)
-//       } else {
-//         ElMessage.error('Loom 文件导出失败')
-//         return
-//       }
-//     } else if (filePath.value.endsWith('.loom')) {
-//       // 提交 Loom 文件
-//       res_loom = await FileApi.exportLoom(filePath.value)
-//       console.log('Loom Response:', res_loom)
-
-//       // 检查 Loom 文件的响应
-//       if (res_loom.data && res_loom.data.code === 0) {
-//         // 提交 TSV 文件
-//         res_tsv = await FileApi.exportTsv(TsvPath.value)
-//         console.log('TSV Response:', res_tsv)
-//       } else {
-//         ElMessage.error('Loom 文件导出失败')
-//         return
-//       }
-//     } else {
-//       ElMessage.error('不支持的文件类型')
-//       return
-//     }
-
-//     // 设置 PNG 文件路径
-//     PngPath.value = '实际地址' // 这里需要替换为实际的 PNG 文件路径
-//   } catch (error) {
-//     console.error('Error:', error)
-//     ElMessage.error('文件导出失败，请重试')
-//   }
-// }
-
+//绘制GRN图片
 const submitPath = async () => {
   try {
-    // const res = await FileApi.getPng('d://filetest//2024 challCup//proData//ACT_377_4830.csv')
-    const res = await FileApi.getPng('D://filetest//2024_challCup//proData//ACT_377_4830.csv')
-    // const res = await FileApi.getTxt()
-
-    alert('1')
+    const res = await FileApi.getGrn(fileName.value)//上传文件名
     console.log(res)
+    ElMessage.success(`正在绘制GRN图`)
   } catch (error) {
     console.error('Error getting PNG:', error)
-    ElMessage.error('!!!')
+    ElMessage.error('Error getting PNG:', error)
   }
 }
 // 绘图按钮

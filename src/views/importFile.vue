@@ -37,7 +37,7 @@ const filePath = ref()
 //打开弹窗方法
 const dialogVisible = ref(false)
 const emit = defineEmits<{
-  (event: 'getFile', file: File | null, filePath: string | null): void,
+  (event: 'getFile', fileName: string | null): void,
   (event: 'failure', file: string | null): void
 }>()
 const open = (FormuStyle: string) => {
@@ -101,16 +101,18 @@ const beforeUpload = (file: any) => {
 const exportFile = async () => {
   dialogVisible.value = false
   if (fileMediate.value) {
-    console.log(fileMediate.value)
+    console.log("file:", fileMediate.value.raw)
     try {
-      const res = await FileApi.exportCsv(fileMediate);
+      const res = await FileApi.exportCsv(fileMediate.value.raw);
+      // const res = await FileApi.TestApi(fileName.value);
       console.log(res)
     } catch (error) {
       ElMessage.error(error)
-    }
-    // emit('getFile', fileMediate.value, filePath.value)
+    } m
+    emit('getFile', fileName.value)
   }
 }
+
 </script>
 
 <style scoped></style>

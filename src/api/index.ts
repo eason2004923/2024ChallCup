@@ -21,17 +21,15 @@ export const FileApi = {
       })
     }
   },
-  getPng: async (data) => {
+  //绘图
+  getGrn: async (data) => {
     if (!data) {
       return Promise.reject(new Error('Data is required'));
     }
     try {
       // return await Axios.post('/adgrn/run?filePath=', { params: data });
-      return await Axios.post('/adgrn/run', { data: data }, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
+
+      return await Axios.post('/prediction/run', null, { params: { fileName: data } });
     } catch (error) {
       console.error('Error getting PNG:', error);
       throw error;
@@ -63,4 +61,12 @@ export const FileApi = {
       throw error;
     }
   },
+  //测试
+  TestApi: async (data: string) => {
+    return Axios.post('/adgrn/test', null, {
+      params: {
+        fileName: data
+      }
+    });
+  }
 }
