@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="医用...系统" width="700px" :before-close="handleClose">
+  <el-dialog v-model="dialogVisible" title="中枢神经预警与诊疗辅助决策系统" width="700px" :before-close="handleClose">
     <span>请提交您的数据文件</span>
     <el-upload class="upload-demo" drag multiple :file-list="fileList" action="#" @change="handleChange"
       :before-upload="beforeUpload" :accept="formulaStyle" :on-success="handleSuccess">
