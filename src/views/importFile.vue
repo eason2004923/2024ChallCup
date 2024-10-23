@@ -108,7 +108,7 @@ const exportFile = async () => {
       console.log(res)
     } catch (error) {
       ElMessage.error(error)
-    } m
+    }
     emit('getFile', fileName.value)
   }
 }
