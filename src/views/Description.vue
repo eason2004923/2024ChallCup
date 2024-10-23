@@ -1,7 +1,8 @@
 <template>
   <div class="description">
-    <h1>Descriptions of STAD-CoAtt:</h1>
-    <h2>辅助诊断AI系统简介</h2>
+    <h1>Description</h1>
+    <h2>Descriptions of STAD-CoAtt:</h2>
+    <h3>辅助诊断AI系统简介</h3>
     <p>
       Single-nucleus RNA sequencing(snRNA-seq) data provide valuable insights about disease
       progression of neurodegeneration. During assessment of Alzheimer's disease(AD), conventional
@@ -43,8 +44,12 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-h1,
-h2 {
+h1{
+  text-align: center;
+  color: #333;
+}
+h2,
+h3 {
   color: #333;
 }
 
@@ -66,6 +71,7 @@ p {
 nav ul {
   text-align: center;
   padding: 0;
+  padding:2rem;
 }
 
 nav li {

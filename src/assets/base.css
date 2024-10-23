@@ -1,15 +1,14 @@
+
 /*header区显示*/
 header {
-  background-color: #333;
-  color: white;
-  padding: 25px 25px;
-  margin: 0;
+  width: 80%;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  width: 96.3%;
+  border-radius: 10px;
+  background-color: #e0e0e0;
+  padding: 1rem;
 }
 
 header h1 {
@@ -17,10 +16,11 @@ header h1 {
   margin: auto;
   font-size: 30px;
   font-weight: bold;
+
 }
 
 .flow-path {
-  width: 90%;
+  width: 80%;
   text-align: center;
   margin: auto;
 }
@@ -57,286 +57,281 @@ header h1 {
 }
 
 .info {
-  background-color: #c1e5ff;
   padding: 1rem;
-  width: 90%;
   text-align: center;
   margin: auto;
 }
 
 .content-information {
-  max-width: 70%;
-  margin: 50px auto;
+  max-width: 80%;
+  margin: 1rem auto;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #d5ffbb;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   position: relative;
+  background-color: #e0e0e0;
 }
 
 .content-introduction {
   font-size: 18px;
-  color: #333;
-  margin-bottom: 20px;
+  max-width: 80%;
+  margin: 1rem auto;
+}
+.content-introduction p{
+  text-align: center;
 }
 
 .upload-button {
-  background-color: #ffffff;
-  color: #fff;
-  border: none;
+  padding: 1rem;
+  font-size: 16px;
 }
 
 .submit-button {
-  background-color: #6c757d;
-  color: #fff;
-}
-
-.upload-button:hover {
-  background-color: #0056b3;
+  padding: 1rem;
+  font-size: 16px;
 }
 
 .file-name {
-  display: block;
   width: 100%;
-  margin-bottom: 10px;
-  font-size: 14px;
-  color: #666;
-}
-
-.submit-button {
-  display: block;
-  width: 100%;
-  padding: 10px 20px;
   font-size: 16px;
-  color: #fff;
-  background-color: #6c757d;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  color: #666;
+  padding: 1rem;
 }
 
-.submit-button:hover {
-  background-color: #5a6268;
-}
-
-.import-file {
-  margin-top: 20px;
+.submit-button:hover{
+  background-color: #edf6ff;
 }
 
 /* 黑色console台*/
 .console {
-  background-color: #7bacf1;
-  color: #fff;
-  padding: 10px;
-  border-radius: 5px;
-  margin-top: 20px;
-  margin-bottom: 2rem;
-  max-width: 800px; /* 设置最大宽度 */
-  margin-left: auto;
-  margin-right: auto; /* 水平居中 */
+background-color: #e8e8e8;
+color: #686868;
+padding: 10px;
+border-radius: 5px;
+margin-top: 20px;
+margin-bottom: 2rem;
+max-width: 800px; /* 设置最大宽度 /
+margin-left: auto;
+margin-right: auto; / 水平居中 */
 }
 
 .console-header {
-  border-bottom: 1px solid #fff;
-  padding-bottom: 5px;
+border-bottom: 1px solid #8d8d8d;
+padding-bottom: 5px;
 }
 
 .console-body {
-  height: 100px;
-  overflow-y: auto;
-  margin-bottom: 10px;
+height: 120px;
+overflow-y: auto;
+margin-bottom: 10px;
 }
 
 .console-output {
-  white-space: pre-wrap;
-  margin-bottom: 5px;
+white-space: pre-wrap;
+margin-bottom: 5px;
 }
 
 .console-input input {
+width: 90%;
+border: none;
+border-radius: 5px;
+padding: 5px;
+color: #000;
+background-color: #fff;
+}
+
+.content-left-console{
+  padding: 10px;
+  margin: 3rem;
+  flex: 1;
   width: 90%;
-  border: none;
-  border-radius: 5px;
-  padding: 5px;
-  color: #000;
-  background-color: #fff;
 }
 
 .content {
-  display: flex;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  padding: 10px;
-  margin: 2rem auto;
-  width: 90%;
-  margin-top: 2rem;
+display: flex;
+grid-template-columns: 1fr 1fr;
+gap:0;
+margin: -4rem auto;
+margin-top: 1rem;
+width: 90%;
 }
 
 .content-left {
-  background-color: #feffd3;
+  border: 1px solid #000;
+  border-radius: 10px;
   padding: 10px;
   margin: 3rem;
   flex: 1;
   width: 90%;
 }
 
-.content-introduction {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  background-color: #f2baba;
-}
-
 .content-right-bottom {
-  justify-content: center;
-  align-items: center;
-  overflow: hidden; /* 防止图片超出容器 */
-  min-height: 20rem;
+justify-content: center;
+align-items: center;
+overflow: hidden; /* 防止图片超出容器 */
+min-height: 20rem;
 }
 
 .content-right-bottom img {
-  max-width: 100%;
-  max-height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+max-width: 100%;
+max-height: 100%;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
 }
 
-.content-left-button .el-button {
-  margin: 5px 0;
-  margin-right: 5px;
+.content-left-button{
+margin: 5px 0;
+margin-right: 5px;
 }
 
 .content-right {
-  border: 1px solid #000;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 3rem;
-  flex: 1;
+border: 1px solid #000;
+padding: 10px;
+border-radius: 10px;
+margin: 3rem;
+flex: 1;
+}
+
+.content-right-picture{
+padding: 10px;
+margin: 3rem;
+flex: 1;
 }
 
 .button1,
-.button2 {
-  margin: 5px 0;
-  padding: 10px;
-  border: 1px solid #cdcdcd;
-  background-color: #ffffff;
+.button3 {
+margin: 5px 0;
+padding: 10px;
+border: 1px solid #cdcdcd;
+background-color: #ffffff;
 }
 
 .button1 {
-  border-radius: 5px;
+border-radius: 5px;
 }
 .button2 {
-  border-radius: 5px;
+border-radius: 5px;
 }
 
 .content-ex {
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
+cursor: pointer;
+position: relative;
+overflow: hidden;
 }
 
 .content-ex.active {
-  z-index: 2;
-  .project-detail-more {
-    display: block;
-    margin: 5%;
-    margin-left: 5%;
-  }
-  .project-button {
-    display: block;
-  }
-  .project-button {
-    display: block;
-  }
+z-index: 2;
+.project-detail-more {
+display: block;
+margin: 5%;
+margin-left: 5%;
+}
+.project-button {
+display: block;
+}
+.project-button {
+display: block;
+}
 }
 
 .content-ex.inactive {
-  flex: 1;
-  overflow: hidden;
+flex: 1;
+overflow: hidden;
 }
 
 .content-ex.inactive img {
-  opacity: 0;
+opacity: 0;
 }
 
 .content-ex img {
-  transition: opacity 0.3s ease;
-  width: 60%;
-  height: auto;
+transition: opacity 0.3s ease;
+width: 60%;
+height: auto;
 }
 
 .content-ex.active img {
-  opacity: 1;
+opacity: 1;
 }
 
 .content-ex .content-container {
-  position: relative;
+position: relative;
 }
 
 .section-A {
-  margin: 20px;
-  padding: 20px;
-  background-color: #f9f9f9; /* 浅色背景 */
-  border-radius: 8px; /* 圆角边框 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 轻微的阴影 */
+margin: 20px;
+padding: 20px;
+background-color: #f9f9f9; /* 浅色背景 /
+border-radius: 8px; / 圆角边框 /
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); / 轻微的阴影 */
 }
 
 .section-A-1 {
-  display: flex;
-  justify-content: center; /* 按钮居中 */
-  margin-bottom: 20px; /* 与信息区域的间距 */
+display: flex;
+justify-content: center; /* 按钮居中 /
+margin-bottom: 20px; / 与信息区域的间距 */
 }
 
 .section-A-1-button {
-  display: inline-block; /* 确保元素显示在一行 */
+display: inline-block; /* 确保元素显示在一行 */
 }
 
 .button3 {
-  background-color: #add6ff; /* Element UI 主题色 */
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease; /* 平滑的背景色变化 */
+background-color: #ffffff; /* Element UI 主题色 /
+color: white;
+border: none;
+padding: 10px 20px;
+border-radius: 4px;
+font-size: 16px;
+cursor: pointer;
+transition: background-color 0.3s ease; / 平滑的背景色变化 */
 }
 
 .button3:hover {
-  background-color: #deffbd; /* 鼠标悬停时的背景色 */
-  color: #8fc7ff;
+background-color: #e6f3ff; /* 鼠标悬停时的背景色 */
+color: #58abff;
 }
 
 .pathology-info {
-  text-align: center; /* 文本居中 */
-  color: #333; /* 深色文本 */
+text-align: center; /* 文本居中 /
+color: #333; / 深色文本 */
 }
-
-/*nav区显示*/
 nav ul {
-  text-align: center;
-  padding: 0;
+text-align: center;
+padding-bottom:2rem;
+margin-top: 3rem;
 }
 
 nav li {
-  display: inline;
-  background-color: #e7e7e7;
-  margin-bottom: 5px;
-  padding: 10px;
-  border-radius: 4px;
-  font-size: 14px;
-  margin-right: 10px;
+display: inline;
+background-color: #e7e7e7;
+margin-bottom: 5px;
+padding: 10px;
+border-radius: 4px;
+font-size: 14px;
+margin-right: 10px;
 }
 
 nav a {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
+text-decoration: none;
+color: #007bff;
+font-weight: bold;
 }
 
 nav a:hover {
-  text-decoration: underline;
+text-decoration: underline;
+}
+
+.viewer-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.viewer-container img {
+  max-width: 100%;
+  max-height: 100%;
 }
