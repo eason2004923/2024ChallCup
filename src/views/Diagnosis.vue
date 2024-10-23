@@ -33,8 +33,8 @@
           <el-button class="button3" @click="pathologybutton" title="病理等级输出">Pathology Grade Output:</el-button>
         </div>
         <div v-if="pathologyGrade !== null" class="pathology-info" @click="pathologybutton">
-          <p>病人的病理等级为：{{ pathologyGrade }}</p>
-          <p>病理等级介绍：病理等级共有0-4一共五个等级，等级越高表示病情越严重。</p>
+          <p>{{ pathologyGrade }}</p>
+          <p>病理等级介绍：病理等级共有1-7一共七个等级，等级越高表示病情越严重。</p>
         </div>
       </div>
       <div class="content-right content-ex">
@@ -156,11 +156,13 @@ const drawChart = async () => {
 
 // 定义病理等级的描述
 const gradeDescriptions = {
-  0: '病理等级为0：无明显病变',
-  1: '病理等级为1：轻微病变',
-  2: '病理等级为2：中度病变',
-  3: '病理等级为3：严重病变',
-  4: '病理等级为4：非常严重病变'
+  1: 'Patient-pathology stage is 1：NO DEMENTIA SEEN',
+  2: 'Patient-pathology stage is 2:SUBJECTIVE MEMORY LOSS, AGE RELATED FORGETFULNESS',
+  3: 'Patient-pathology stage is 3: MILD COGNITIVE IMPAIRMENT',
+  4: 'Patient-pathology stage is 4: MODERATE COGNITIVE DECLINE, MILD DEMENTIA',
+  5: 'Patient-pathology stage is 5: MODERATELY SEVERE COGNITIVE DECLINE, MODERATE DEMENTIA',
+  6: 'Patient-pathology stage is 6: SEVERE COGNITIVE DECLINE, MODERATELY SEVERE DEMENTIA',
+  7: 'Patient-pathology stage is 7:VERY SEVERE COGNITIVE DECLINE, SEVERE DEMENTIA'
 }
 // 获取病理等级
 const getpathologygrade = async () => {
