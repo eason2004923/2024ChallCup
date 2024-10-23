@@ -29,23 +29,6 @@
 
     <div class="content">
       <div class="content-left content-ex">
-        <div class="content-left-button">
-          <el-button class="button3" @click="pathologybutton" title="病理等级输出">Pathology Grade Output:</el-button>
-        </div>
-        <div v-if="pathologyGrade !== null" class="pathology-info" @click="pathologybutton">
-          <p>{{ pathologyGrade }}</p>
-          <p>病理等级介绍：病理等级共有1-7一共七个等级，等级越高表示病情越严重。</p>
-        </div>
-      </div>
-      <div class="content-right content-ex">
-        <div class="content-right-bottom" ref="viewerContainer">
-           <img :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image" @click="openViewer"/>
-        </div>
-      </div>
-    </div>
-
-    <div class="content">
-      <div class="content-ex content-left-console">
         <div class="console">
           <div class="console-header">
             <h3>Console</h3>
@@ -55,9 +38,35 @@
               {{ message }}
             </div>
           </div>
-          <div class="console-input">
-            <input type="text" v-model="inputCommand" @keyup.enter="executeCommand" placeholder="Enter command" />
+          <div class="console-output">
+            <p :src="thing">..</p>
           </div>
+        </div>
+      </div>
+      <div class="content-right content-ex">
+        <div class="content-GRN-button">
+          <button class="content-GRN-button1">GRN-1</button>
+          <button class="content-GRN-button1">GRN-2</button>
+        </div>
+        <div class="content-GRN-info">
+          <p>网络图节点数量：</p>
+          <p>网络图边数量：</p>
+          <p>模块数量：</p>
+        </div>
+        <div class="content-right-bottom" ref="viewerContainer">
+           <img :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image" @click="openViewer"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="content-ex content-left-console">
+        <div class="content-left-button">
+          <el-button class="button3" @click="pathologybutton" title="病理等级输出">Pathology Grade Output:</el-button>
+        </div>
+        <div v-if="pathologyGrade !== null" class="pathology-info" @click="pathologybutton">
+          <p>{{ pathologyGrade }}</p>
+          <p>病理等级介绍：病理等级共有1-7一共七个等级，等级越高表示病情越严重。</p>
         </div>
       </div>
 
@@ -77,9 +86,9 @@
 
     <nav>
       <ul>
-        <li><a href="/" title="首页">index</a></li>
-        <li><a href="/background" title="背景情况介绍">background</a></li>
-        <li><a href="/description" title="辅助诊断AI系统简介">description</a></li>
+        <li><a href="/" title="首页">Index</a></li>
+        <li><a href="/background" title="背景情况介绍">Background</a></li>
+        <li><a href="/description" title="辅助诊断AI系统简介">Description</a></li>
       </ul>
     </nav>
   </div>
@@ -89,8 +98,6 @@ import { ElMessage, ElNotification, ElProgress ,ElDialog} from 'element-plus'
 import ImportFile from './importFile.vue'
 import { ref } from 'vue'
 import { FileApi } from '@/api/index'
-import { ESLint } from 'eslint'
-import { errorMessages } from 'vue/compiler-sfc'
 import Viewer from 'viewerjs'
 import 'viewerjs/dist/viewer.css'
 import { nextTick } from 'vue';
@@ -99,6 +106,7 @@ const fileName = ref('The file was not entered')
 const filePath = ref('NULL')
 const TsvPath = ref('tsv文件地址')
 const PngPath = ref('../public/Grn.png')
+const thing = ref('../public/console.txt')
 const RefFile_csv = ref()
 const RefFile_loom = ref()
 const consoleMessages = ref([])
@@ -170,7 +178,7 @@ const getpathologygrade = async () => {
     // 从服务器获取病理等级
     const response = await fetch('/api/pathology-grade')
     const grade = await response.text() // 服务器返回的纯文本数字
-    pathologyGrade.value = gradeDescriptions[1] // 使用映射获取病理等级描述
+    pathologyGrade.value = gradeDescriptions[grade] // 使用映射获取病理等级描述
     progress.value = 100 // 获取病理等级后进度条前进到100%
   } catch (error) {
     console.error('获取病理等级失败:', error)

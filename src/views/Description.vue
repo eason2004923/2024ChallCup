@@ -21,9 +21,9 @@
   </div>
   <nav>
     <ul>
-      <li><a href="/" title="首页">index</a></li>
-      <li><a href="/background" title="背景情况介绍">background</a></li>
-      <li><a href="/diagnosis" title="数据测试">diagnosis</a></li>
+      <li><a href="/" title="首页">Index</a></li>
+      <li><a href="/background" title="背景情况介绍">Background</a></li>
+      <li><a href="/diagnosis" title="数据测试">Diagnosis</a></li>
     </ul>
   </nav>
 </template>

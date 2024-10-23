@@ -7,7 +7,7 @@ header {
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  background-color: #e0e0e0;
+  background-color: #b7d6ff;
   padding: 1rem;
 }
 
@@ -69,7 +69,7 @@ header h1 {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   position: relative;
-  background-color: #e0e0e0;
+  background-color: #b7d6ff;
 }
 
 .content-introduction {
@@ -104,19 +104,19 @@ header h1 {
 
 /* 黑色console台*/
 .console {
-background-color: #e8e8e8;
-color: #686868;
-padding: 10px;
+background-color: #393939;
+color: #ffffff;
+padding: 3rem;
 border-radius: 5px;
-margin-top: 20px;
-margin-bottom: 2rem;
-max-width: 800px; /* 设置最大宽度 /
-margin-left: auto;
-margin-right: auto; / 水平居中 */
+margin-top: 10px;
+margin-bottom: 5rem;
+max-width: 800px; /* 设置最大宽度 */
+height: 20rem;
+padding-top: 1rem;
 }
 
 .console-header {
-border-bottom: 1px solid #8d8d8d;
+border-bottom: 1px solid #ffffff;
 padding-bottom: 5px;
 }
 
@@ -157,8 +157,7 @@ width: 90%;
 }
 
 .content-left {
-  border: 1px solid #000;
-  border-radius: 10px;
+
   padding: 10px;
   margin: 3rem;
   flex: 1;
