@@ -47,7 +47,8 @@
       <div class="content-right content-ex">
         <div class="content-right-bottom">
           <viewer :url="PngPath" ref="viewer">
-            <img :src="PngPath" alt="无法加载" />
+            <!-- <img :src="PngPath" alt="无法加载" /> -->
+            <img src="http://121.41.52.142:5090/path/on/server/data/GRN.png" alt="GRN Image">
           </viewer>
         </div>
       </div>

@@ -29,7 +29,7 @@ export const FileApi = {
     try {
       // return await Axios.post('/adgrn/run?filePath=', { params: data });
 
-      return await Axios.post('/prediction/run', null, { params: { fileName: data } });
+      return await Axios.post('/adgrn/run', null, { params: { fileName: data } });
     } catch (error) {
       console.error('Error getting PNG:', error);
       throw error;
