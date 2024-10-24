@@ -1,6 +1,7 @@
 <template>
   <div class="background">
-    <h1>Clinical Stages of Alzheimer’s</h1>
+    <h1>Background</h1>
+    <h2>Clinical Stages of Alzheimer’s</h2>
     <p>
       The seven Clinical Stages of Alzheimer’s disease, also known as the Global Deterioration Scale
       (GDS), was developed by Dr. Barry Reisberg, Director of the Fisher Alzheimer’s Disease
@@ -45,7 +46,10 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-h1,
+h1{
+  text-align: center;
+  color: #333;
+}
 h2 {
   color: #333;
 }
@@ -71,7 +75,7 @@ li {
 
 nav ul {
   text-align: center;
-  padding: 0;
+  padding:2rem;
 }
 
 nav li {
