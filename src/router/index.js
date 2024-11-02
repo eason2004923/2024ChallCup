@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Background from '@/views/Background.vue'
-import Description from '@/views/Description.vue'
-import Diagnosis from '@/views/Diagnosis.vue'
+import Background from '@/views/Background/Background.vue'
+import Description from '@/views/Description/Description.vue'
+import Diagnosis from '@/views/Diagnosis/Diagnosis.vue'
 import index from '@/views/index.vue'
 
 const router = createRouter({
@@ -13,17 +13,17 @@ const router = createRouter({
       component: index
     },
     {
-      path: '/background',
+      path: '/background/background',
       name: 'background',
       component: Background
     },
     {
-      path: '/description',
+      path: '/description/description',
       name: 'description',
       component: Description
     },
     {
-      path: '/diagnosis',
+      path: '/diagnosis/diagnosis',
       name: 'diagnosis',
       component: Diagnosis
     }

@@ -16,6 +16,9 @@
                 file
                 upload</span></el-button>
             <span class="file-name">当前文件：{{ fileName }}</span>
+            <el-button>
+              test_perfrom
+            </el-button>
           </div>
           <br />
           <div>
@@ -70,9 +73,6 @@
               {{ message }}
             </div>
           </div>
-          <div class="console-input">
-            <input type="text" v-model="inputCommand" @keyup.enter="executeCommand" placeholder="Enter command" />
-          </div>
         </div>
       </div>
 
@@ -101,7 +101,7 @@
 </template>
 <script setup lang="ts">
 import { ElMessage, ElNotification, ElProgress, ElDialog } from 'element-plus'
-import ImportFile from './importFile.vue'
+import ImportFile from './element/importFile.vue'
 import { ref, toRef } from 'vue'
 import { FileApi } from '@/api/index'
 import { ESLint } from 'eslint'
@@ -359,5 +359,5 @@ const CloseSSE = () => {
 }
 </script>
 <style scoped>
-@import '../assets/base.css';
+@import '@/assets/base.css';
 </style>
