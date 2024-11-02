@@ -16,7 +16,7 @@
     </el-upload>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button @click="handleClose()">Cancel</el-button>
         <!-- <el-button type="primary" @click="dialogVisible = false">Confirm</el-button> -->
         <el-button type="primary" @click="exportFile">Confirm</el-button>
       </span>
@@ -38,7 +38,7 @@ const filePath = ref()
 const dialogVisible = ref(false)
 const emit = defineEmits<{
   (event: 'getFile', fileName: string | null): void,
-  (event: 'failure', file: string | null): void
+  (event: 'closeDialog'): void
 }>()
 const open = (FormuStyle: string) => {
   dialogVisible.value = true
@@ -60,6 +60,7 @@ defineExpose({ open })
 //关闭弹窗
 const handleClose = () => {
   dialogVisible.value = false
+  emit('closeDialog')
 }
 
 //获取文件
@@ -106,11 +107,14 @@ const exportFile = async () => {
       const res = await FileApi.exportCsv(fileMediate.value.raw);
       // const res = await FileApi.TestApi(fileName.value);
       console.log(res)
+      ElMessage.success("文件上传成功")
     } catch (error) {
-      ElMessage.error(error)
+      ElMessage.error(`文件上传失败${error}`)
     }
     emit('getFile', fileName.value)
+    emit('closeDialog')
   }
+  emit('closeDialog')
 }
 
 </script>
