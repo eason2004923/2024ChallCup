@@ -13,17 +13,17 @@ const router = createRouter({
       component: index
     },
     {
-      path: '/background/background',
+      path: '/background',
       name: 'background',
       component: Background
     },
     {
-      path: '/description/description',
+      path: '/description',
       name: 'description',
       component: Description
     },
     {
-      path: '/diagnosis/diagnosis',
+      path: '/diagnosis',
       name: 'diagnosis',
       component: Diagnosis
     }

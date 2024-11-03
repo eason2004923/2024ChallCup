@@ -51,6 +51,15 @@
         <div v-if="pathologyGrade !== null" class="pathology-info" @click="pathologybutton">
           {{ pathologyGrade }}
         </div>
+        <div class="content-GRN-button">
+          <button class="content-GRN-button1">GRN-1</button>
+          <button class="content-GRN-button1">GRN-2</button>
+        </div>
+        <div class="content-GRN-info">
+          <p>网络图节点数量：</p>
+          <p>网络图边数量：</p>
+          <p>模块数量：</p>
+        </div>
       </div>
       <div class="content-right content-ex">
 
