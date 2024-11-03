@@ -2,7 +2,8 @@
   <div id="app">
     <header><h1>Diagnosis</h1></header>
 
-    <div class="info">
+    <div 
+    class="info">
       <div class="brfore">
         <div class="content-introduction"><p>information………</p></div>
         <div class="content-information">
@@ -95,7 +96,6 @@
 </template>
 <script setup lang="ts">
 import { ElMessage, ElNotification, ElProgress ,ElDialog} from 'element-plus'
-import ImportFile from './importFile.vue'
 import { ref } from 'vue'
 import { FileApi } from '@/api/index'
 import Viewer from 'viewerjs'
