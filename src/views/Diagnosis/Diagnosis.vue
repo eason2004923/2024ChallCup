@@ -24,10 +24,8 @@
           <div>
             <el-button type="primary" :plain="true" v-loading="submitting" :disabled="(submitting == true)"
               @click="submitPath" title="submit出错提示">submit</el-button>
-            <el-button type="primary" :plain="true" @click="getPredict" titl e="Description">Description</el-button>
-            <el-button class="button1" @click="acquireGrn" title="Description">testPNG</el-button>
-            <el-button class="button1" @click="ConnectSSE" title="Description">testSSEOpen</el-button>
-            <el-button class="button1" @click="CloseSSE" title="Description">testSSEClose</el-button>
+            <el-button type="primary" :plain="true" @click="getPredict" titl e="Description" v-loading="perdicting"
+              :disabled="(perdicting == true)">Description</el-button>
           </div>
         </div>
       </div>
@@ -51,20 +49,27 @@
         <div v-if="pathologyGrade !== null" class="pathology-info" @click="pathologybutton">
           {{ pathologyGrade }}
         </div>
+        <div v-else class="pathology-info" @click="pathologybutton">
+          <span>等待预测病理阶段</span>
+        </div>
         <div class="content-GRN-button">
           <button class="content-GRN-button1">GRN-1</button>
           <button class="content-GRN-button1">GRN-2</button>
         </div>
         <div class="content-GRN-info">
-          <p>网络图节点数量：</p>
-          <p>网络图边数量：</p>
-          <p>模块数量：</p>
+          <p>网络图节点数量：{{ PointNumber }}</p>
+          <p>网络图边数量：{{ SideNumber }}</p>
+          <p>模块数量：{{ ModNumber }}</p>
         </div>
       </div>
       <div class="content-right content-ex">
 
         <div class="content-right-bottom" ref="viewerContainer">
-          <img :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image" @click="openViewer" />
+          <div style="background-color: #f9f9f9;">
+            <img v-if="IsGRNExist" :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image"
+              @click="openViewer" />
+            <span v-else>GRN图正在等待绘制</span>
+          </div>
         </div>
       </div>
     </div>
@@ -135,6 +140,10 @@ const uploading = ref(false)//csv upload按钮的加载显示
 const testing = ref(false)//test_System按钮的加载显示
 const perdicting = ref(false)//desrciption按钮加载显示
 const submitting = ref(false)//submit按钮加载显示
+const IsGRNExist = ref(false)//submit按钮加载显示
+const PointNumber = ref('未存在图片')//网络图节点数量
+const SideNumber = ref('未存在图片')//网络图边数量
+const ModNumber = ref('未存在图片')//模块数量
 let eventSource//SSE连接
 const uid = ref()
 const executeCommand = () => {
@@ -171,27 +180,32 @@ const closeSystem = () => {
 const getFileName = async (tool) => {
   console.log(tool)
   fileName.value = tool
+  progress.value = 33 // upload后进度到33%
 }
 //开始绘图
 const submitPath = async () => {
-  // if (fileName.value == "The file was not entered") {
-  //   ElMessage.error('请先上传文件')
-  //   return
-  // }
+  if (fileName.value == "The file was not entered") {
+    ElMessage.error('请先上传文件')
+    return
+  }
+  progress.value = 33 // upload后进度到33%
   submitting.value = true
+  IsGRNExist.value = false
   try {
+    ConnectSSE()
     console.log('正在绘制图片', fileName.value, uid.value)
     const res = await FileApi.makeGrn(fileName.value, uid.value); // 上传文件名
     console.log("GRN图绘制成功:", res);
     ElMessage.success(`正在绘制GRN图`);
-    progress.value = 33; // 绘图后进度条前进到1/3
     acquireGrn()
+    PointNumber.value = res.data.data['网络图节点数量'];
+    SideNumber.value = res.data.data['网络图边数量'];
+    ModNumber.value = res.data.data['模块数量'];
   } catch (error) {
+    submitting.value = false
     console.error('Error makeing PNG:', error);
     ElMessage.error('Error makeing PNG:', error);
-    progress.value = 33;
   }
-  submitting.value = false
 };
 //获取绘图
 // const acquireGrn = async () => {
@@ -231,11 +245,14 @@ const acquireGrn = async () => {
     console.log("得到的GRN响应:", res);
     const blob = res.data;//直接使用Blob数据
     PngPath.value = URL.createObjectURL(blob);//生成对象URLPngPath.value=imageUrl;//保存图像路径
-    console.log("Grn图url:", PngPath.value); progress.value = 66;//绘图后进度条更新到66%downloadBlob(blob,'image.png');//使用downloadBlob下载Blob} catch(error){
+    console.log("Grn图url:", PngPath.value);
+    progress.value = 66;//绘图后进度条更新到66%downloadBlob(blob,'image.png');//使用downloadBlob下载Blob} catch(error){
+    IsGRNExist.value = true
     downloadBlob(blob, '1.png')
   } catch (error) {
     console.log(error)
   }
+  submitting.value = false
 }
 const downloadBlob = (blob, filename) => {
   const url = URL.createObjectURL(blob);
@@ -260,26 +277,31 @@ const gradeDescriptions = {
 }
 // 预测按钮
 const getPredict = async () => {
-
+  //检测文件是否存在
   if (fileName.value == "The file was not entered") {
     ElMessage.error('请先上传文件')
     return
   }
+  progress.value = 66 // 获取病理等级前进度条前进到66%
   // if (progress.value < 33) {
   // ElMessage.warning('Please upload a file first.');
   // } else {
+  perdicting.value = true
   try {
     console.log(fileName.value)
+    ElMessage.success('正在预测病理阶段')
     const res = await FileApi.getHealthMess(fileName.value) // 确保文件上传成功后再继续
     console.log(res)
     const grade = Number(res.data.data)// 服务器返回的纯文本数字
     console.log('预测病理等级为:', grade)
     pathologyGrade.value = gradeDescriptions[grade + 1] // 使用映射获取病理等级描述
     progress.value = 100 // 获取病理等级后进度条前进到100%
+    ElMessage.success('病理阶段预测成功')
   } catch (error) {
     console.error('预测失败:', error);
-    ElMessage.error('预测失败');
+    ElMessage.error('病理阶段预测失败');
   }
+  perdicting.value = false
   // }
 };
 

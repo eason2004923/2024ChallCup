@@ -108,11 +108,12 @@ const exportFile = async () => {
       const res = await FileApi.exportCsv(fileMediate.value.raw);
       // const res = await FileApi.TestApi(fileName.value);
       console.log(res)
+      emit('getFile', fileName.value)
       ElMessage.success("文件上传成功")
     } catch (error) {
       ElMessage.error(`文件上传失败${error}`)
     }
-    emit('getFile', fileName.value)
+
     emit('closeDialog')
   }
   emit('closeDialog')
