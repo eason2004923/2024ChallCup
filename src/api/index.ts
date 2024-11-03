@@ -3,16 +3,18 @@ import axios from 'axios';
 import { ElMessage } from 'element-plus'
 export const FileApi = {
   //绘图
-  makeGrn: async (data) => {
-    if (!data) {
-      return Promise.reject(new Error('Data is required'));
+  makeGrn: async (fileName: string, uid: string) => {
+    if (!fileName) {
+      return Promise.reject(new Error('fileName is required'));
+    }
+    if (!uid) {
+      return Promise.reject(new Error('uid is required'));
     }
     try {
       // return await Axios.post('/adgrn/run?filePath=', { params: data });
-
-      return await Axios.post('/adgrn/test', null, { params: { uid: data } });
+      return await Axios.post('/adgrn/run', null, { params: { fileName: fileName, uid: uid } });
     } catch (error) {
-      console.error('Error getting PNG:', error);
+      console.error('Error making PNG:', error);
       throw error;
     }
   },
@@ -39,18 +41,18 @@ export const FileApi = {
     }
   },
   //获取console日志
-  getConsole: async (data) => {
-    if (!data) {
-      return Promise.reject(new Error('Data is required'));
-    }
-    try {
-      // return await Axios.get('/sse/sendMsg', { params: { uid: data } });
-      return await Axios.post('/adgrn/test', null, { params: { uid: data } })
-    } catch (error) {
-      console.error('Error getting PNG:', error);
-      throw error;
-    }
-  },
+  // getConsole: async (data) => {
+  //   if (!data) {
+  //     return Promise.reject(new Error('Data is required'));
+  //   }
+  //   try {
+  //     // return await Axios.get('/sse/sendMsg', { params: { uid: data } });
+  //     return await Axios.post('/adgrn/test', null, { params: { uid: data } })
+  //   } catch (error) {
+  //     console.error('Error getting PNG:', error);
+  //     throw error;
+  //   }
+  // },
   //上传CSV
   exportCsv: async (fileData) => {
     if (!fileData) {
@@ -63,6 +65,31 @@ export const FileApi = {
     } catch (error) {
       console.error('Error uploadCsv:', error);
       throw new Error('Failed to upload the CSV file');
+    }
+  },
+  //获取测试数据集
+  getTestData: async (id: string) => {
+    if (id == '1') { return await Axios.get('/prediction/test1/name'); }
+    else if (id == '2') { return await Axios.get('/prediction/test2/name'); }
+    else return
+
+  },
+  //绘制ROC
+  makeROC: async (id: string) => {
+    try {
+      return await Axios.post('/ROC/test', null, { params: { test_code: id } })
+    } catch (error) {
+      console.log("making ROC error:", error)
+      throw (error)
+    }
+  },
+  //获得ROC
+  getROC: async () => {
+    try {
+      return await Axios.get('/ROC/getROC', { responseType: 'blob' })
+    } catch (error) {
+      console.log("getting ROC error:", error)
+      throw (error)
     }
   },
   //测试

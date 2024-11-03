@@ -34,17 +34,18 @@ const fileName = ref() //记录文件名
 const fileMediate = ref() //记录文件
 const formulaStyle = ref()
 const filePath = ref()
-//打开弹窗方法
-const dialogVisible = ref(false)
 const emit = defineEmits<{
   (event: 'getFile', fileName: string | null): void,
   (event: 'closeDialog'): void
 }>()
+//打开弹窗方法
+const dialogVisible = ref(false)
 const open = (FormuStyle: string) => {
   dialogVisible.value = true
   formulaStyle.value = FormuStyle
   console.log(formulaStyle.value)
 }
+defineExpose({ open })
 //获取绝对路径
 const handleSuccess = (response: any, file: any, fileList: any[]) => {
   if (response.success) {
@@ -56,7 +57,7 @@ const handleSuccess = (response: any, file: any, fileList: any[]) => {
   }
 }
 
-defineExpose({ open })
+
 //关闭弹窗
 const handleClose = () => {
   dialogVisible.value = false

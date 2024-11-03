@@ -11,25 +11,23 @@
         </div>
         <div class="content-information">
           <div>
-            <el-button v-loading="uploading" :disabled="(uploading == true)" @click="openForm('.csv')"
+            <el-button type="primary" v-loading="uploading" :disabled="(uploading == true)" @click="openUpload('.csv')"
               class="upload-button"><span title="CSV文件上传">csv
                 file
                 upload</span></el-button>
             <span class="file-name">当前文件：{{ fileName }}</span>
-            <el-button>
-              test_perfrom
+            <el-button type="primary" v-loading="testing" :disabled="(testing == true)" @click="openSystem">
+              test_System
             </el-button>
           </div>
           <br />
           <div>
-            <el-button v-loading="submitting" :disabled="(submitting == true)" :plain="true" @click="submitPath"
-              class="submit-button" title="submit出错提示">submit</el-button>
-            <el-button class="button1" @click="getPredict" title="Description">Description</el-button>
+            <el-button type="primary" :plain="true" v-loading="submitting" :disabled="(submitting == true)"
+              @click="submitPath" title="submit出错提示">submit</el-button>
+            <el-button type="primary" :plain="true" @click="getPredict" titl e="Description">Description</el-button>
             <el-button class="button1" @click="acquireGrn" title="Description">testPNG</el-button>
             <el-button class="button1" @click="ConnectSSE" title="Description">testSSEOpen</el-button>
-            <el-button class="button1" @click="GetSSE" title="Description">getSSE</el-button>
             <el-button class="button1" @click="CloseSSE" title="Description">testSSEClose</el-button>
-            <ImportFile ref="RefFile_csv" @getFile="getFileName" @closeDialog="closeUpload" />
           </div>
         </div>
       </div>
@@ -68,7 +66,7 @@
           <div class="console-header">
             <h3>Console</h3>
           </div>
-          <div class="console-body">
+          <div class="console-body" ref="consoleBody">
             <div class="console-output" v-for="(message, index) in consoleMessages" :key="index">
               {{ message }}
             </div>
@@ -98,10 +96,13 @@
       </ul>
     </nav>
   </div>
+  <ImportFile ref="Refupload" @getFile="getFileName" @closeDialog="closeUpload" />
+  <TestSystem ref="RefSystem" @closeDialog="closeSystem" />
 </template>
 <script setup lang="ts">
 import { ElMessage, ElNotification, ElProgress, ElDialog } from 'element-plus'
 import ImportFile from './element/importFile.vue'
+import TestSystem from './element/testSystem.vue'
 import { ref, toRef } from 'vue'
 import { FileApi } from '@/api/index'
 import { ESLint } from 'eslint'
@@ -114,7 +115,6 @@ import { connect } from 'http2'
 const fileName = ref('The file was not entered')
 const filePath = ref('NULL')
 const PngPath = ref('../public/tutor.png')
-const RefFile_csv = ref()
 const RefFile_loom = ref()
 const consoleMessages = ref([])
 const pathologyGrade = ref(null) // 添加病理等级响应式数据属性
@@ -123,6 +123,7 @@ const dialogVisible = ref(false);
 const viewerInstance = ref(null);
 const viewerContainer = ref(null);
 const uploading = ref(false)//csv upload按钮的加载显示
+const testing = ref(false)//test_System按钮的加载显示
 const perdicting = ref(false)//desrciption按钮加载显示
 const submitting = ref(false)//submit按钮加载显示
 let eventSource//SSE连接
@@ -136,15 +137,27 @@ const executeCommand = () => {
 }
 
 const inputCommand = ref('')
-//打开弹窗
-const openForm = (tool: string) => {
+//打开upload弹窗
+const Refupload = ref()
+const openUpload = (tool: string) => {
   uploading.value = true
-  RefFile_csv.value.open(tool)
+  Refupload.value.open(tool)
 }
 //关闭upload弹窗
 const closeUpload = () => {
   uploading.value = false
 }
+//打开System弹窗
+const RefSystem = ref()
+const openSystem = () => {
+  testing.value = true
+  RefSystem.value.open()
+}
+//关闭System弹窗
+const closeSystem = () => {
+  testing.value = false
+}
+
 // 获取文件名
 const getFileName = async (tool) => {
   console.log(tool)
@@ -158,7 +171,8 @@ const submitPath = async () => {
   // }
   submitting.value = true
   try {
-    const res = await FileApi.makeGrn(uid.value); // 上传文件名
+    console.log('正在绘制图片', fileName.value, uid.value)
+    const res = await FileApi.makeGrn(fileName.value, uid.value); // 上传文件名
     console.log("GRN图绘制成功:", res);
     ElMessage.success(`正在绘制GRN图`);
     progress.value = 33; // 绘图后进度条前进到1/3
@@ -209,21 +223,22 @@ const acquireGrn = async () => {
     const blob = res.data;//直接使用Blob数据
     PngPath.value = URL.createObjectURL(blob);//生成对象URLPngPath.value=imageUrl;//保存图像路径
     console.log("Grn图url:", PngPath.value); progress.value = 66;//绘图后进度条更新到66%downloadBlob(blob,'image.png');//使用downloadBlob下载Blob} catch(error){
-    const downloadBlob = (blob, filename) => {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = filename || 'download';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url); // 释放 URL 对象
-      document.body.removeChild(a);
-    };
+    downloadBlob(blob, '1.png')
   } catch (error) {
     console.log(error)
   }
 }
+const downloadBlob = (blob, filename) => {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  a.href = url;
+  a.download = filename || 'download';
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url); // 释放 URL 对象
+  document.body.removeChild(a);
+};
 // 定义病理等级的描述
 const gradeDescriptions = {
   1: 'Patient-pathology stage is 1：NO DEMENTIA SEEN',
@@ -325,8 +340,16 @@ const handleClose = () => {
     viewerInstance.value = null;
   }
 };
+//方法：滚动到底部
+const consoleBody = ref(null);
+const scrollToBottom = () => {
+  nextTick(() => {
+    if (consoleBody.value) {
+      consoleBody.value.scrollTop = consoleBody.value.scrollHeight;
+    }
+  });
+};
 //连接SSE
-
 const ConnectSSE = () => {
   CloseSSE();
   uid.value = 123
@@ -338,17 +361,13 @@ const ConnectSSE = () => {
     if (event.data) {
       console.log(event.data)
       consoleMessages.value.push(`> ${event.data}`)
+      scrollToBottom(); // 滚动到底部
     }
   }
   eventSource.onerror = function (error) {
     console.error('SSE发生错误:', error, 'readyState:', eventSource.readyState);
     // 可以在这里添加重试逻辑或其他错误处理
   };
-}
-const GetSSE = () => {
-  if (eventSource) {
-    FileApi.getConsole(uid.value)
-  }
 }
 const CloseSSE = () => {
   if (eventSource) {
