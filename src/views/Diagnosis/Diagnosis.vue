@@ -384,7 +384,7 @@ const scrollToBottom = () => {
 const ConnectSSE = () => {
   CloseSSE();
   uid.value = 123
-  eventSource = new EventSource(`http://121.41.52.142:5090/sse/createSse?uid=${uid.value}`);
+  eventSource = new EventSource(`http://114.55.225.40:5090/sse/createSse?uid=${uid.value}`);
   eventSource.onopen = function (event) {
     console.log('SSE链接成功');
   }
