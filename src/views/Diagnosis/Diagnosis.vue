@@ -4,72 +4,60 @@
       <h1>Diagnosis</h1>
     </header>
 
-    <div class="info">
-      <div class="brfore">
-        <div class="content-introduction">
-          <p>information………</p>
-        </div>
-        <div class="content-information">
-          <div>
-            <el-button type="primary" v-loading="uploading" :disabled="(uploading == true)" @click="openUpload('.csv')"
-              class="upload-button"><span title="CSV文件上传">csv
-                file
-                upload</span></el-button>
-            <span class="file-name">当前文件：{{ fileName }}</span>
-            <el-button type="primary" v-loading="testing" :disabled="(testing == true)" @click="openSystem">
-              test_System
-            </el-button>
-          </div>
-          <br />
-          <div>
-            <el-button type="primary" :plain="true" v-loading="submitting" :disabled="(submitting == true)"
-              @click="submitPath" title="submit出错提示">submit</el-button>
-            <el-button type="primary" :plain="true" @click="getPredict" titl e="Description">Description</el-button>
-            <el-button class="button1" @click="acquireGrn" title="Description">testPNG</el-button>
-            <el-button class="button1" @click="ConnectSSE" title="Description">testSSEOpen</el-button>
-            <el-button class="button1" @click="CloseSSE" title="Description">testSSEClose</el-button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="flow-path">
-      <p title="按钮进度显示">Button progress display:</p>
-      <el-progress :percentage="progress" class="el-progress"></el-progress>
-      <div class="steps-description">
-        <span :class="{ show: progress >= 33 }">First step: Upload</span>
-        <span :class="{ show: progress >= 66 }">Second step: Inference</span>
-        <span :class="{ show: progress >= 100 }">Third step: Description</span>
-      </div>
-    </div>
-
-    <div class="content">
+    <div class="content1">
       <div class="content-left content-ex">
+        <div class="info">
+          <div class="brfore">
+            <div class="content-introduction">
+              <p>information………</p>
+            </div>
+            <div class="content-information">
+              <div>
+                <el-button type="primary" v-loading="uploading" :disabled="(uploading == true)" @click="openUpload('.csv')" class="upload-button">
+                  <span title="CSV文件上传">csv File upload</span>
+                </el-button>
+                <span class="file-name">当前文件：{{ fileName }}</span>
+                <el-button type="primary" v-loading="testing" :disabled="(testing == true)" @click="openSystem">
+                  Test_System
+                </el-button>
+              </div>
+              <br />
+              <div>
+                <el-button class="button1"type="primary" :plain="true" v-loading="submitting" :disabled="(submitting == true)" @click="submitPath" title="submit出错提示">Submit</el-button>
+                <el-button class="button1" type="primary" :plain="true" @click="getPredict" title="Description">Description</el-button>
+                <el-button class="button1" @click="acquireGrn" title="Description">TestPNG</el-button>
+                <el-button class="button1" @click="ConnectSSE" title="Description">TestSSEOpen</el-button>
+                <el-button class="button1" @click="CloseSSE" title="Description">TestSSEClose</el-button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="content-left-button">
           <el-button class="button3" @click="pathologybutton" title="病理等级输出">Pathology Grade Output:</el-button>
         </div>
         <div v-if="pathologyGrade !== null" class="pathology-info" @click="pathologybutton">
           {{ pathologyGrade }}
         </div>
-        <div class="content-GRN-button">
-          <button class="content-GRN-button1">GRN-1</button>
-          <button class="content-GRN-button1">GRN-2</button>
-        </div>
-        <div class="content-GRN-info">
-          <p>网络图节点数量：</p>
-          <p>网络图边数量：</p>
-          <p>模块数量：</p>
-        </div>
       </div>
       <div class="content-right content-ex">
-
-        <div class="content-right-bottom" ref="viewerContainer">
-          <img :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image" @click="openViewer" />
+        <div class="content-right-img" ref="viewerContainer">
+          <img :src="PngPath" alt="模型生成GRN图" class="viewer-image" @click="openViewer" />
+        </div>
+        <div class="content-right-info">
+          <div class="content-GRN-button">
+            <button class="content-GRN-button1">GRN-1</button>
+            <button class="content-GRN-button2">GRN-2</button>
+          </div>
+          <div class="content-GRN-info">
+            <p>网络图节点数量：</p>
+            <p>网络图边数量：</p>
+            <p>模块数量：</p>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="content">
+    <div class="content2">
       <div class="content-ex content-left-console">
         <div class="console">
           <div class="console-header">
@@ -82,37 +70,40 @@
           </div>
         </div>
       </div>
-
-
-      <el-dialog :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
-        <div ref="viewerContainer">
-          <img :src="PngPath" alt="无法加载" class="viewer-image" @click="openViewer" />
-        </div>
-      </el-dialog>
-
-      <div class="content-right-picture">
+      <div class="content-right-picture content-ex">
         <div class="content-right-button">
           <p>图片介绍：.......</p>
         </div>
       </div>
     </div>
+    
+    <el-dialog :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
+        <div ref="viewerContainer">
+          <img :src="PngPath" alt="无法加载" class="viewer-image" @click="openViewer" />
+        </div>
+    </el-dialog>
 
     <nav>
       <ul>
-        <li><a href="/" title="首页">index</a></li>
-        <li><a href="/background" title="背景情况介绍">background</a></li>
-        <li><a href="/description" title="辅助诊断AI系统简介">description</a></li>
+        <li><a href="/" title="首页">Index</a></li>
+        <li><a href="/background" title="背景情况介绍">Background</a></li>
+        <li><a href="/description" title="辅助诊断AI系统简介">Description</a></li>
       </ul>
     </nav>
   </div>
+  <div id="particles-container" class="myElement"></div>
   <ImportFile ref="Refupload" @getFile="getFileName" @closeDialog="closeUpload" />
   <TestSystem ref="RefSystem" @closeDialog="closeSystem" />
 </template>
+
 <script setup lang="ts">
+import"@/router/jquery-2.1.1.min.js";
+import"@/router/particle-1.1.min.js";
+import"@/router/diagnosis.js";
 import { ElMessage, ElNotification, ElProgress, ElDialog } from 'element-plus'
 import ImportFile from './element/importFile.vue'
 import TestSystem from './element/testSystem.vue'
-import { ref, toRef } from 'vue'
+import { onMounted, ref } from 'vue';
 import { FileApi } from '@/api/index'
 import { ESLint } from 'eslint'
 import { errorMessages } from 'vue/compiler-sfc'
@@ -120,6 +111,7 @@ import Viewer from 'viewerjs'
 import 'viewerjs/dist/viewer.css'
 import { nextTick } from 'vue';
 import { connect } from 'http2'
+import $ from 'jquery';
 
 const fileName = ref('The file was not entered')
 const filePath = ref('NULL')
@@ -127,7 +119,6 @@ const PngPath = ref('../public/tutor.png')
 const RefFile_loom = ref()
 const consoleMessages = ref([])
 const pathologyGrade = ref(null) // 添加病理等级响应式数据属性
-const progress = ref(0) // 定义进度变量
 const dialogVisible = ref(false);
 const viewerInstance = ref(null);
 const viewerContainer = ref(null);
@@ -135,6 +126,7 @@ const uploading = ref(false)//csv upload按钮的加载显示
 const testing = ref(false)//test_System按钮的加载显示
 const perdicting = ref(false)//desrciption按钮加载显示
 const submitting = ref(false)//submit按钮加载显示
+const particleBackground = ref(null);
 let eventSource//SSE连接
 const uid = ref()
 const executeCommand = () => {
@@ -184,12 +176,10 @@ const submitPath = async () => {
     const res = await FileApi.makeGrn(fileName.value, uid.value); // 上传文件名
     console.log("GRN图绘制成功:", res);
     ElMessage.success(`正在绘制GRN图`);
-    progress.value = 33; // 绘图后进度条前进到1/3
     acquireGrn()
   } catch (error) {
     console.error('Error makeing PNG:', error);
     ElMessage.error('Error makeing PNG:', error);
-    progress.value = 33;
   }
   submitting.value = false
 };
@@ -231,7 +221,7 @@ const acquireGrn = async () => {
     console.log("得到的GRN响应:", res);
     const blob = res.data;//直接使用Blob数据
     PngPath.value = URL.createObjectURL(blob);//生成对象URLPngPath.value=imageUrl;//保存图像路径
-    console.log("Grn图url:", PngPath.value); progress.value = 66;//绘图后进度条更新到66%downloadBlob(blob,'image.png');//使用downloadBlob下载Blob} catch(error){
+    console.log("Grn图url:", PngPath.value);//绘图后进度条更新到66%downloadBlob(blob,'image.png');//使用downloadBlob下载Blob} catch(error){
     downloadBlob(blob, '1.png')
   } catch (error) {
     console.log(error)
@@ -275,7 +265,6 @@ const getPredict = async () => {
     const grade = Number(res.data.data)// 服务器返回的纯文本数字
     console.log('预测病理等级为:', grade)
     pathologyGrade.value = gradeDescriptions[grade + 1] // 使用映射获取病理等级描述
-    progress.value = 100 // 获取病理等级后进度条前进到100%
   } catch (error) {
     console.error('预测失败:', error);
     ElMessage.error('预测失败');
@@ -291,7 +280,6 @@ const getpathologygrade = async () => {
     const response = await FileApi.getHealthMess(fileName.value)
     const grade = await response.data // 服务器返回的纯文本数字
     pathologyGrade.value = gradeDescriptions[grade] // 使用映射获取病理等级描述
-    progress.value = 100 // 获取病理等级后进度条前进到100%
   } catch (error) {
     console.error('获取病理等级失败:', error)
     ElMessage.error('无法获取病理等级')
@@ -299,7 +287,7 @@ const getpathologygrade = async () => {
 }
 //病理显示按钮
 const pathologybutton = async () => {
-  if (progress.value < 66) {
+  if (fileName.value == "The file was not entered") {
     ElMessage.warning('Please draw the picture first.');
   } else {
     await getpathologygrade(); // 调用获取病理等级的方法
@@ -384,8 +372,36 @@ const CloseSSE = () => {
     console.log('SSE connection closed.');
     eventSource = null; // 清除引用
   }
-}
+};
+
+// move动画效果
+const toggleEnlarge = (event) => {
+  const target = event.target.closest('.content-ex');
+
+  if (!target) return;
+
+  // 如果当前点击的元素已经是放大状态，则缩小
+  if (target.classList.contains('enlarge')) {
+    target.classList.replace('enlarge', 'shrink');
+  } else {
+    // 先缩小所有已经放大的元素
+    document.querySelectorAll('.content-ex.enlarge').forEach((el) => {
+      el.classList.replace('enlarge', 'shrink');
+    });
+    // 放大当前点击的元素
+    target.classList.add('enlarge');
+  }
+};
+
+// 确保在DOM加载完成后添加事件监听器
+document.addEventListener('DOMContentLoaded', () => {
+  // 为每个content-ex元素添加点击事件监听器
+  document.querySelectorAll('.content-ex').forEach((element) => {
+    element.addEventListener('click', toggleEnlarge);
+  });
+});
 </script>
 <style scoped>
 @import '@/assets/base.css';
+@import '@/assets/move.css';
 </style>
