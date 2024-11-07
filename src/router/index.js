@@ -23,7 +23,7 @@ const router = createRouter({
       component: Description
     },
     {
-      path: '/diagnosis/diagnosis',
+      path: '/diagnosis',
       name: 'diagnosis',
       component: Diagnosis
     }
