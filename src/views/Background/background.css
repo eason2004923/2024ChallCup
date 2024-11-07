@@ -226,29 +226,7 @@
     max-width: 100%;
   }
   
-#footer{
-    ul {
-        list-style-type: none;
-        padding: 0;
-      }
-      
-      li {
-        background-color: #e7e7e7;
-        margin-bottom: 5px;
-        padding: 10px;
-        border-radius: 4px;
-        font-size: 14px;
-      }
-      
-      nav ul {
-        text-align: center;
-        padding:2rem;
-      }
-      
-      nav li {
-        display: inline;
-        margin-right: 10px;
-      }
+#bottom-link{
       
       nav a {
         text-decoration: none;
@@ -261,6 +239,52 @@
       }
   }
 
+  /*footer区显示*/
+footer {
+  background-color: #314584;
+  color: white;
+  text-align: center;
+  padding: 20px 20px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+footer h2,
+footer h3 {
+  color: white;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto; /* 将列表居中 */
+  display: flex;
+  justify-content: center; /* 使列表项居中对齐 */
+  margin-bottom: 10px;
+}
+
+footer ul li {
+  margin: 0 10px; /* 为每个列表项添加左右外边距 */
+}
+
+footer ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+footer ul li a:hover {
+  color: #e0ee8b;
+}
+
+footer p {
+  font-size: 0.85em;
+  margin-top: 20px;
+  color: #cccccc;
+}
 
     
   /* 响应式设计 */

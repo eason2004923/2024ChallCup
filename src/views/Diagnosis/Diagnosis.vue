@@ -4,8 +4,19 @@
       <h1>Diagnosis</h1>
     </header>
 
+    <div class="flow-path">
+      <p title="按钮进度显示">Button progress display:</p>
+      <el-progress :percentage="progress" class="el-progress"></el-progress>
+      <div class="steps-description">
+        <span  :class="{ show: progress >= 33 }">First step: Upload</span>
+        <span  :class="{ show: progress >= 66 }">Second step: Inference</span>
+        <span  :class="{ show: progress >= 100 }">Third step: Description</span>
+      </div>
+    </div>
+
+  <div class="content"> 
     <div class="content1">
-      <div class="content-left content-ex">
+      <div class="content-left">
         <div class="info">
           <div class="brfore">
             <div class="content-introduction">
@@ -40,13 +51,26 @@
           <span>等待预测病理阶段</span>
         </div>
       </div>
-      <div class="content-right content-ex">
+      <div class="content-left-console">
+        <div class="console">
+          <div class="console-header">
+            <h3>Console</h3>
+          </div>
+          <div class="console-body" ref="consoleBody">
+            <div class="console-output" v-for="(message, index) in consoleMessages" :key="index">
+              {{ message }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content2">
+      <div class="content-right">
         <div class="content-right-img" ref="viewerContainer">
-          <div style="background-color: #f9f9f9;">
             <img v-if="IsGRNExist" :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image"
               @click="openViewer" />
-            <span v-else>GRN图正在等待绘制</span>
-          </div>
+            <span v-else>GRN图正在等待绘制...</span>
         </div>
         <div class="content-right-info">
           <div class="content-GRN-button">
@@ -61,26 +85,7 @@
         </div>
       </div>
     </div>
-
-    <div class="content2">
-      <div class="content-ex content-left-console">
-        <div class="console">
-          <div class="console-header">
-            <h3>Console</h3>
-          </div>
-          <div class="console-body" ref="consoleBody">
-            <div class="console-output" v-for="(message, index) in consoleMessages" :key="index">
-              {{ message }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="content-right-picture content-ex">
-        <div class="content-right-button">
-          <p>图片介绍：.......</p>
-        </div>
-      </div>
-    </div>
+  </div> 
     
     <el-dialog :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
         <div ref="viewerContainer">
@@ -88,13 +93,16 @@
         </div>
     </el-dialog>
 
-    <nav>
+    <footer>
+      <h2>All about this</h2>
+      <h3>please contanct with us.</h3>
       <ul>
         <li><a href="/" title="首页">Index</a></li>
-        <li><a href="/background" title="背景情况介绍">Background</a></li>
-        <li><a href="/description" title="辅助诊断AI系统简介">Description</a></li>
+        <li><a href="/background" title="背景情况介绍">background</a></li>
+        <li><a href="/description" title="辅助诊断AI系统简介">description</a></li>
       </ul>
-    </nav>
+      <p>Copyright © 2024.zstu.digital medicine All rights reserved.</p>
+    </footer>
   </div>
   <div id="particles-container" class="myElement"></div>
   <ImportFile ref="Refupload" @getFile="getFileName" @closeDialog="closeUpload" />
@@ -134,7 +142,7 @@ const submitting = ref(false)//submit按钮加载显示
 const particleBackground = ref(null);
 let eventSource//SSE连接
 const uid = ref()
-
+const progress = ref(0) // 定义进度变量
 const IsGRNExist = ref(false)//submit按钮加载显示
 const PointNumber = ref('未存在图片')//网络图节点数量
 const SideNumber = ref('未存在图片')//网络图边数量
@@ -154,6 +162,7 @@ const Refupload = ref()
 const openUpload = (tool: string) => {
   uploading.value = true
   Refupload.value.open(tool)
+  progress.value = 33 // 获取病理等级后进度条前进到1/3
 }
 //关闭upload弹窗
 const closeUpload = () => {
@@ -188,6 +197,7 @@ const submitPath = async () => {
     console.log('正在绘制图片', fileName.value, uid.value)
     const res = await FileApi.makeGrn(fileName.value, uid.value); // 上传文件名
     console.log("GRN图绘制成功:", res);
+    progress.value=66; // 绘图后进度条前进到2/3
     ElMessage.success(`正在绘制GRN图`);
     acquireGrn()
     PointNumber.value = res.data.data['网络图节点数量'];
@@ -304,6 +314,7 @@ const getpathologygrade = async () => {
     const response = await FileApi.getHealthMess(fileName.value)
     const grade = await response.data // 服务器返回的纯文本数字
     pathologyGrade.value = gradeDescriptions[grade] // 使用映射获取病理等级描述
+    progress.value = 100 // 获取病理等级后进度条前进到100%
   } catch (error) {
     console.error('获取病理等级失败:', error)
     ElMessage.error('无法获取病理等级')
@@ -397,35 +408,7 @@ const CloseSSE = () => {
     eventSource = null; // 清除引用
   }
 };
-
-// move动画效果
-const toggleEnlarge = (event) => {
-  const target = event.target.closest('.content-ex');
-
-  if (!target) return;
-
-  // 如果当前点击的元素已经是放大状态，则缩小
-  if (target.classList.contains('enlarge')) {
-    target.classList.replace('enlarge', 'shrink');
-  } else {
-    // 先缩小所有已经放大的元素
-    document.querySelectorAll('.content-ex.enlarge').forEach((el) => {
-      el.classList.replace('enlarge', 'shrink');
-    });
-    // 放大当前点击的元素
-    target.classList.add('enlarge');
-  }
-};
-
-// 确保在DOM加载完成后添加事件监听器
-document.addEventListener('DOMContentLoaded', () => {
-  // 为每个content-ex元素添加点击事件监听器
-  document.querySelectorAll('.content-ex').forEach((element) => {
-    element.addEventListener('click', toggleEnlarge);
-  });
-});
 </script>
 <style scoped>
 @import '@/assets/base.css';
-@import '@/assets/move.css';
 </style>

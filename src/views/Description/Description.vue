@@ -19,13 +19,16 @@
     <img src="/public/image/image.png" alt="STAD-CoAtt方法的框架" class="framework-image" />
     <h2>The framework of STAD-CoAtt method.</h2>
   </div>
-  <nav>
-    <ul>
-      <li><a href="/" title="首页">Index</a></li>
-      <li><a href="/background" title="背景情况介绍">Background</a></li>
-      <li><a href="/diagnosis" title="数据测试">Diagnosis</a></li>
-    </ul>
-  </nav>
+  <footer>
+      <h2>All about this</h2>
+      <h3>please contanct with us.</h3>
+      <ul>
+        <li><a href="/" title="首页">Index</a></li>
+        <li><a href="/background" title="背景情况介绍">Background</a></li>
+        <li><a href="/diagnosis" title="数据测试">Diagnosis</a></li>
+      </ul>
+      <p>Copyright © 2024.zstu.digital medicine All rights reserved.</p>
+    </footer>
 </template>
 
 <script>
@@ -68,29 +71,51 @@ p {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-nav ul {
+/*footer区显示*/
+footer {
+  margin-top: 20px;
+  background-color: #314584;
+  color: white;
   text-align: center;
+  padding: 20px 20px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+footer h2,
+footer h3 {
+  color: white;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+footer ul {
+  list-style: none;
   padding: 0;
-  padding:2rem;
+  margin: 0 auto; /* 将列表居中 */
+  display: flex;
+  justify-content: center; /* 使列表项居中对齐 */
+  margin-bottom: 10px;
 }
 
-nav li {
-  display: inline;
-  background-color: #e7e7e7;
-  margin-bottom: 5px;
-  padding: 10px;
-  border-radius: 4px;
-  font-size: 14px;
-  margin-right: 10px;
+footer ul li {
+  margin: 0 10px; /* 为每个列表项添加左右外边距 */
 }
 
-nav a {
+footer ul li a {
+  color: white;
   text-decoration: none;
-  color: #007bff;
   font-weight: bold;
+  transition: color 0.3s;
 }
 
-nav a:hover {
-  text-decoration: underline;
+footer ul li a:hover {
+  color: #e0ee8b;
+}
+
+footer p {
+  font-size: 0.85em;
+  margin-top: 20px;
+  color: #cccccc;
 }
 </style>

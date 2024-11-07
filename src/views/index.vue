@@ -30,9 +30,9 @@
       <h2>All about this</h2>
       <h3>please contanct with us.</h3>
       <ul>
-        <li><a href="/background" title="背景情况介绍">background</a></li>
-        <li><a href="/description" title="辅助诊断AI系统简介">description</a></li>
-        <li><a href="/diagnosis" title="数据测试">diagnosis</a></li>
+        <li><a href="/background" title="背景情况介绍">Background</a></li>
+        <li><a href="/description" title="辅助诊断AI系统简介">Description</a></li>
+        <li><a href="/diagnosis" title="数据测试">Diagnosis</a></li>
       </ul>
       <p>Copyright © 2024.zstu.digital medicine All rights reserved.</p>
     </footer>

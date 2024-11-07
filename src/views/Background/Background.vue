@@ -163,7 +163,7 @@
       </div>
     </div>
 
-    <div id="footer">
+    <div id="bottom-link">
       <div>
         <div>
           <h2><strong>Adapted in part from:</strong></h2>
@@ -180,15 +180,18 @@
           <p><a href="https://www.alzinfo.org/articles/diagnosis/">Alzheimer’s Diagnosis</a></p>
         </div>
       </div>
-      <nav>
-        <ul>
-          <li><a href="/" title="首页">Index</a></li>
-          <li><a href="/description" title="辅助诊断AI系统简介">Description</a></li>
-          <li><a href="/diagnosis" title="数据测试">Diagnosis</a></li>
-        </ul>
-      </nav>
     </div>
 </div>
+<footer>
+      <h2>All about this</h2>
+      <h3>please contanct with us.</h3>
+      <ul>
+        <li><a href="/" title="首页">Index</a></li>
+        <li><a href="/description" title="辅助诊断AI系统简介">Description</a></li>
+        <li><a href="/diagnosis" title="数据测试">Diagnosis</a></li>
+      </ul>
+      <p>Copyright © 2024.zstu.digital medicine All rights reserved.</p>
+    </footer>
 </template>
 
 <script>
