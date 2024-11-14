@@ -1,4 +1,13 @@
 <template>
+    <header>
+      <h3>STAD-CoAtt</h3>
+      <ul>
+        <li><a href="/diagnosis" title="数据测试">Diagnosis</a></li>
+        <li><a href="/description" title="辅助诊断AI系统简介">Description</a></li>
+        <li><a href="/background" title="背景情况介绍">Background</a></li>
+        <li><a href="/" title="首页">Index</a></li>
+      </ul>
+  </header>
   <div class="head">
       <div class="head-container">
         <h1>Clinical Stages of Alzheimer’s</h1>
@@ -183,8 +192,6 @@
     </div>
 </div>
 <footer>
-      <h2>All about this</h2>
-      <h3>please contanct with us.</h3>
       <ul>
         <li><a href="/" title="首页">Index</a></li>
         <li><a href="/description" title="辅助诊断AI系统简介">Description</a></li>

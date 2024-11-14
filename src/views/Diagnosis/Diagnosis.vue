@@ -38,6 +38,9 @@
                 <el-button type="primary" :plain="true" @click="getPredict" titl e="Description" v-loading="perdicting"
                 :disabled="(perdicting == true)">Description</el-button>
               </div>
+              <div>
+                <button class="content-export-button" >Report export</button>
+              </div>
             </div>
           </div>
         </div>
@@ -79,8 +82,11 @@
           </div>
           <div class="content-GRN-info">
             <p>网络图节点数量：{{ PointNumber }}</p>
-          <p>网络图边数量：{{ SideNumber }}</p>
-          <p>模块数量：{{ ModNumber }}</p>
+            <p>网络图边数量：{{ SideNumber }}</p>
+            <p>模块数量：{{ ModNumber }}</p>
+          </div>
+          <div class="content-GRN-export">
+            <button class="content-GRN-export-button"  title="下载图片"  @click="imageload()">Picture export</button>
           </div>
         </div>
       </div>
@@ -94,12 +100,10 @@
     </el-dialog>
 
     <footer>
-      <h2>All about this</h2>
-      <h3>please contanct with us.</h3>
       <ul>
         <li><a href="/" title="首页">Index</a></li>
-        <li><a href="/background" title="背景情况介绍">background</a></li>
-        <li><a href="/description" title="辅助诊断AI系统简介">description</a></li>
+        <li><a href="/background" title="背景情况介绍">Background</a></li>
+        <li><a href="/description" title="辅助诊断AI系统简介">Description</a></li>
       </ul>
       <p>Copyright © 2024.zstu.digital medicine All rights reserved.</p>
     </footer>
@@ -408,6 +412,40 @@ const CloseSSE = () => {
     eventSource = null; // 清除引用
   }
 };
+
+    // 下载图片
+    function downloadByBlob(url, name) {
+        let image = new Image();
+        image.setAttribute('crossOrigin', 'anonymous');
+        image.src = url;
+        image.onload = () => {
+            let canvas = document.createElement('canvas');
+            canvas.width = image.width;
+            canvas.height = image.height;
+            let ctx = canvas.getContext('2d');
+            ctx.drawImage(image, 0, 0, image.width, image.height);
+            canvas.toBlob((blob) => {
+                let url = URL.createObjectURL(blob);
+                download(url, name);
+                // 用完释放URL对象
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        }
+    }
+
+    function download(href, name) {
+        let eleLink = document.createElement('a');
+        eleLink.download = name;
+        eleLink.href = href;
+        document.body.appendChild(eleLink);
+        eleLink.click();
+        eleLink.remove();
+    }
+const  imageload=()=>{
+  downloadByBlob('PngPath','GRN-picture');
+  console.log('GRN-picture下载成功！');
+}
+
 </script>
 <style scoped>
 @import '@/assets/base.css';

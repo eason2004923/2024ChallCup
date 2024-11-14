@@ -1,4 +1,28 @@
 <template>
+  <header>
+      <h3>STAD-CoAtt</h3>
+      <ul>
+        <li><a href="/diagnosis" title="数据测试">Diagnosis</a></li>
+        <li><a href="/description" title="辅助诊断AI系统简介">Description</a></li>
+        <li><a href="/background" title="背景情况介绍">Background</a></li>
+        <li><a href="/" title="首页">Index</a></li>
+      </ul>
+  </header>
+  <!-- <header1>
+  <div class="logo">
+    <a href="#">Company Name</a>
+  </div>
+  <nav>
+    <div class="nav-responsive"><a id="nav-toggle" href="/"><span></span></a></div>
+    <ul class="navlist">
+      <li><a>Home</a></li>
+      <li><a>Something</a></li>
+      <li><a>other</a></li>
+      <li><a>About</a></li>
+      <li><a>Contact</a></li>
+    </ul>
+  </nav>
+</header1> -->
   <div class="description">
     <h1>Description</h1>
     <h2>Descriptions of STAD-CoAtt:</h2>
@@ -20,8 +44,6 @@
     <h2>The framework of STAD-CoAtt method.</h2>
   </div>
   <footer>
-      <h2>All about this</h2>
-      <h3>please contanct with us.</h3>
       <ul>
         <li><a href="/" title="首页">Index</a></li>
         <li><a href="/background" title="背景情况介绍">Background</a></li>
@@ -33,14 +55,83 @@
 
 <script>
 export default {
-  name: 'Description'
-}
+  name: 'Description',
+  data() {
+    return {
+      isNavVisible: false,
+      isNavActive: false,
+      navLinks: [
+        { text: 'Home', active: false },
+        { text: 'About', active: false },
+        { text: 'Services', active: false },
+        { text: 'Contact', active: false },
+      ],
+      logoColor: '#fff',
+    };
+  },
+  methods: {
+    toggleNav() {
+      this.isNavVisible = !this.isNavVisible;
+      this.isNavActive = !this.isNavActive;
+    },
+    setActiveLink(link) {
+      this.navLinks.forEach((lnk) => lnk.active = false);
+      link.active = true;
+    },
+  },
+};
 </script>
 
 <style scoped>
+header{
+  background-color: #333;
+  display: flex;
+}
+header ul{
+  flex: 1;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+header li {
+  float: right;
+}
+header a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+header a:hover {
+  background-color: #111; 
+  color: #e0ee8b;
+}
+header::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+header h3 {
+  flex: 1;
+  float: left;
+  color: white;
+  padding: 14px 16px;
+  margin: 0;
+  font-size: 18px;
+}
+
 .description {
   max-width: 800px;
   margin: auto;
+  margin-top: 75px;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
@@ -78,15 +169,6 @@ footer {
   color: white;
   text-align: center;
   padding: 20px 20px;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-}
-
-footer h2,
-footer h3 {
-  color: white;
-  margin-bottom: 10px;
-  text-align: center;
 }
 
 footer ul {

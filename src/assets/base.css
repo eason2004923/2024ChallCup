@@ -67,8 +67,7 @@ header {
   color: white;
   text-align: center;
   padding: 1rem;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+
 }
 
 nav {
@@ -261,7 +260,7 @@ h3{
   color: #fff;
 }
 
-.content-GRN-button1,.content-GRN-button2,.button3,.el-button{
+.content-GRN-button1,.content-GRN-button2,.button3,.el-button,.content-GRN-export-button,.content-export-button{
   margin-right: 10px;
   padding: 7px;
   background-color: #3d9bff;
@@ -270,7 +269,7 @@ h3{
   border-radius: 5px;
   transition: padding 0.3s ease;
 }
-.content-GRN-button1:hover,.content-GRN-button2:hover,.button3:hover,.el-button:hover{
+.content-GRN-button1:hover,.content-GRN-button2:hover,.button3:hover,.el-button:hover,.content-GRN-export-button:hover,.content-export-button:hover{
   color: #fff;
   background-color: #74b7ff;
   padding: 10px;
@@ -288,18 +287,8 @@ footer {
   color: white;
   text-align: center;
   padding: 20px 20px;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-}
 
-footer h2,
-footer h3 {
-  color: white;
-  margin-bottom: 10px;
-  text-align: center;
-  border-bottom:0;
 }
-
 footer ul {
   list-style: none;
   padding: 0;
@@ -332,9 +321,14 @@ footer p {
 
 
 /* Media Queries */
-@media (max-width: 768px) {
+@media (max-width: 800px) {
+  .content{
+    flex-direction: column;
+  }
   .content1, .content2 {
       flex-direction: column;
+      width: 90%;
+      
   }
 
   .content-left, .content-right {

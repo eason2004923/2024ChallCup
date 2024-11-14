@@ -10,15 +10,15 @@
       <nav>
         <ul>
           <li>
-            <a href="/background/background" title="背景情况介绍">background</a>
+            <a href="/background" title="背景情况介绍">background</a>
             <p>:此链接向背景情况介绍</p>
           </li>
           <li>
-            <a href="/description/description" title="辅助诊断AI系统简介">description</a>
+            <a href="/description" title="辅助诊断AI系统简介">description</a>
             <p>:此链接向辅助诊断AI系统简介</p>
           </li>
           <li>
-            <a href="/diagnosis/diagnosis" title="数据测试">diagnosis</a>
+            <a href="/diagnosis" title="数据测试">diagnosis</a>
             <p>:此链接向数据测试</p>
           </li>
         </ul>
