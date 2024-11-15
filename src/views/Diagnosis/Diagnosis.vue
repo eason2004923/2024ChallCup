@@ -20,38 +20,47 @@
         <div class="info">
           <div class="brfore">
             <div class="content-introduction">
-              <p>information………</p>
             </div>
             <div class="content-information">
-              <div>
+              <div class="data-upload">
+                <p>Upload data</p>
                 <el-button type="primary" v-loading="uploading" :disabled="(uploading == true)" @click="openUpload('.csv')" class="upload-button">
-                  <span title="CSV文件上传">csv File upload</span>
+                  <span title="CSV文件上传">Csv File Upload</span>
                 </el-button>
-                <span class="file-name">当前文件：{{ fileName }}</span>
+                <span class="file-name">The current file：{{ fileName }}</span>
                 <el-button type="primary" v-loading="testing" :disabled="(testing == true)" @click="openSystem">
                   Test_System
                 </el-button>
               </div>
+              <span></span>
               <br />
-              <div>
-                <el-button class="button1"type="primary" :plain="true" v-loading="submitting" :disabled="(submitting == true)" @click="submitPath" title="submit出错提示">Submit</el-button>
-                <el-button type="primary" :plain="true" @click="getPredict" titl e="Description" v-loading="perdicting"
-                :disabled="(perdicting == true)">Description</el-button>
-              </div>
-              <div>
-                <button class="content-export-button" >Report export</button>
+              <div class="Functional-analysis">
+                <p>Functional analysis</p><span></span>
+                <div class="function-area">
+                  <div class="function-area1">
+                    <el-button class="button1"type="primary" :plain="true" v-loading="submitting" :disabled="(submitting == true)" @click="submitPath" title="submit出错提示">Submit</el-button>
+                    <el-button type="primary" :plain="true" @click="getPredict" title="Description" v-loading="perdicting" id="function-area1-description"
+                    :disabled="(perdicting == true)">Description</el-button>
+                    <div>
+                        <button class="content-export-button" title="报告下载" @click="downloadReport">Report Export</button>
+                    </div>
+                  </div>
+                  <div class="function-area2">
+                    <div class="content-left-button">
+                      <el-button class="button3" @click="pathologybutton" title="病理等级输出">Pathology Grade Output:</el-button>
+                    </div>
+                    <div v-if="pathologyGrade !== null" class="pathology-info" @click="pathologybutton">
+                         {{ pathologyGrade }}
+                    </div>
+                    <div v-else class="pathology-info" @click="pathologybutton">
+                         <span>等待预测病理阶段</span>
+                     </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
-        </div>
-        <div class="content-left-button">
-          <el-button class="button3" @click="pathologybutton" title="病理等级输出">Pathology Grade Output:</el-button>
-        </div>
-        <div v-if="pathologyGrade !== null" class="pathology-info" @click="pathologybutton">
-          {{ pathologyGrade }}
-        </div>
-        <div v-else class="pathology-info" @click="pathologybutton">
-          <span>等待预测病理阶段</span>
         </div>
       </div>
       <div class="content-left-console">
@@ -71,8 +80,7 @@
     <div class="content2">
       <div class="content-right">
         <div class="content-right-img" ref="viewerContainer">
-            <img v-if="IsGRNExist" :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image"
-              @click="openViewer" />
+            <img v-if="IsGRNExist" :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image" @click="openViewer" />
             <span v-else>GRN图正在等待绘制...</span>
         </div>
         <div class="content-right-info">
@@ -86,7 +94,7 @@
             <p>模块数量：{{ ModNumber }}</p>
           </div>
           <div class="content-GRN-export">
-            <button class="content-GRN-export-button"  title="下载图片"  @click="imageload()">Picture export</button>
+            <button class="content-GRN-export-button"  title="下载图片"  @click="imageload()">Picture Export</button>
           </div>
         </div>
       </div>
@@ -413,38 +421,76 @@ const CloseSSE = () => {
   }
 };
 
-    // 下载图片
-    function downloadByBlob(url, name) {
-        let image = new Image();
-        image.setAttribute('crossOrigin', 'anonymous');
-        image.src = url;
-        image.onload = () => {
-            let canvas = document.createElement('canvas');
-            canvas.width = image.width;
-            canvas.height = image.height;
-            let ctx = canvas.getContext('2d');
-            ctx.drawImage(image, 0, 0, image.width, image.height);
-            canvas.toBlob((blob) => {
+// 下载图片
+function downloadByBlob(url, name, callback) {
+    let image = new Image();
+    image.setAttribute('crossOrigin', 'anonymous');
+    image.src = url;
+    image.onload = () => {
+        let canvas = document.createElement('canvas');
+        canvas.width = image.width;
+        canvas.height = image.height;
+        let ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0, 0, image.width, image.height);
+        canvas.toBlob((blob) => {
+            if (blob) {
                 let url = URL.createObjectURL(blob);
                 download(url, name);
                 // 用完释放URL对象
                 URL.revokeObjectURL(url);
-            }, 'image/png');
-        }
-    }
-
-    function download(href, name) {
-        let eleLink = document.createElement('a');
-        eleLink.download = name;
-        eleLink.href = href;
-        document.body.appendChild(eleLink);
-        eleLink.click();
-        eleLink.remove();
-    }
-const  imageload=()=>{
-  downloadByBlob('PngPath','GRN-picture');
-  console.log('GRN-picture下载成功！');
+                callback(true); // 下载成功
+            } else {
+                callback(false); // toBlob 失败
+            }
+        }, 'image/png');
+    };
+    image.onerror = () => {
+        callback(false); // 图片加载失败
+    };
 }
+
+function download(href, name) {
+    let eleLink = document.createElement('a');
+    eleLink.download = name;
+    eleLink.href = href;
+    document.body.appendChild(eleLink);
+    eleLink.click();
+    eleLink.remove();
+}
+
+const imageload = () => {
+    downloadByBlob('PngPath', 'GRN-picture', (success) => {
+        if (success) {
+            console.log('GRN-picture下载成功！');
+        } else {
+            console.log('GRN-picture下载失败！');
+        }
+    });
+}
+
+//报告下载
+const downloadReport = async () => {
+  try {
+    // 发起请求到后端接口
+    const response = await fetch('/report/get');
+    if (!response.ok) {
+      throw new Error('网络响应错误');
+    }
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.style.display = 'none';
+    link.href = url;
+    // 设置下载文件名，假设文件名为report.pdf
+    link.download = 'report.pdf';
+    document.body.appendChild(link);
+    link.click();
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('下载报告失败:', error);
+    alert('报告下载失败，请稍后再试或联系我们。');
+  }
+};
 
 </script>
 <style scoped>

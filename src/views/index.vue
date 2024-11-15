@@ -10,24 +10,30 @@
       <nav>
         <ul>
           <li>
-            <a href="/background" title="背景情况介绍">background</a>
-            <p>:此链接向背景情况介绍</p>
+            <img src="/public/image/logo-1.png" alt="logo-1">
+            <a href="/background" title="背景情况介绍">Background</a>
+            <p>:背景情况介绍</p>
           </li>
           <li>
-            <a href="/description" title="辅助诊断AI系统简介">description</a>
-            <p>:此链接向辅助诊断AI系统简介</p>
+            <img src="/public/image/logo-2.png" alt="logo-2">
+            <a href="/description" title="辅助诊断AI系统简介">Description</a>
+            <p>:辅助诊断AI系统简介</p>
           </li>
           <li>
-            <a href="/diagnosis" title="数据测试">diagnosis</a>
-            <p>:此链接向数据测试</p>
+            <img src="/public/image/logo-3.png" alt="logo-3">
+            <a href="/diagnosis" title="数据测试">Diagnosis</a>
+            <p>:数据测试</p>
           </li>
         </ul>
       </nav>
-      <p>information......</p>
+      <div id="contanct">
+        <p >information......</p>
+        <p>Mailbox:**********@**.com</p>
+      </div>
     </div>
 
     <footer>
-      <h2>All about this</h2>
+      <h3>All about this</h3>
       <h3>please contanct with us.</h3>
       <ul>
         <li><a href="/background" title="背景情况介绍">Background</a></li>

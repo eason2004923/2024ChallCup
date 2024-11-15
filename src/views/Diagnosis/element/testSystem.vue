@@ -2,11 +2,12 @@
   <el-dialog v-model="dialogVisible" title="中枢神经预警与诊疗辅助决策系统" width="1000px" :before-close="handleClose">
     <div class="box">
       <div class="box_left">
+        <!-- <el-table :data="tableData" style="width: 100%">
+          <el-table-column prop="name" width="250" />
+        </el-table> -->
+        <p>请选择数据集:</p>
         <el-button type="primary" @click="testData('1')">数据集一</el-button>
         <el-button type="primary" @click="testData('2')">数据集二</el-button>
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="name" label="fileName" width="250" />
-        </el-table>
       </div>
       <div class="box_right">
         <el-button type="primary" @click="testROC" v-loading="makeingROC"
@@ -143,6 +144,10 @@ watch(ROCPath, (newVal, oldVal) => {
   width: 40%;
   /* 左侧区域占50%宽度 */
   border-right: 1px solid #dcdcdc;
+}
+
+.box_left  p{
+  color: black;
 }
 
 .box_right {
