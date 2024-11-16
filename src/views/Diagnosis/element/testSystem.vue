@@ -157,6 +157,10 @@ watch(ROCPath, (newVal, oldVal) => {
   border-right: 1px solid #dcdcdc;
 }
 
+.box_left p {
+  color: black;
+}
+
 .box_right {
   width: 60%;
   /* 右侧区域占50%宽度 */
