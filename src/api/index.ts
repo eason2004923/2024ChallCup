@@ -75,9 +75,9 @@ export const FileApi = {
 
   },
   //绘制ROC
-  makeROC: async (id: string) => {
+  makeROC: async (dataNumber: string, uid: string) => {
     try {
-      return await Axios.post('/ROC/test', null, { params: { test_code: id } })
+      return await Axios.post('/ROC/test', null, { params: { test_code: dataNumber, uid: uid } })
     } catch (error) {
       console.log("making ROC error:", error)
       throw (error)

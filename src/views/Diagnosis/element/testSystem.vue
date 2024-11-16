@@ -2,14 +2,24 @@
   <el-dialog v-model="dialogVisible" title="中枢神经预警与诊疗辅助决策系统" width="1000px" :before-close="handleClose">
     <div class="box">
       <div class="box_left">
-        <el-button type="primary" @click="testData('1')">数据集一</el-button>
-        <el-button type="primary" @click="testData('2')">数据集二</el-button>
+        <div>
+          <span>请选择数据集</span>
+        </div>
+        <el-button type="primary" @click="chooseData('1')">数据集一</el-button>
+        <el-button type="primary" @click="chooseData('2')">数据集二</el-button>
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="name" label="fileName" width="250" />
+          <el-table-column prop="name" width="250">
+            <template #header>
+              <!-- 不渲染任何内容，从而隐藏表头 -->
+            </template>
+            <template #default="scope">
+              {{ scope.row.name }}
+            </template>
+          </el-table-column>
         </el-table>
       </div>
       <div class="box_right">
-        <el-button type="primary" @click="testROC" v-loading="makeingROC"
+        <el-button type="primary" @click="drawROC" v-loading="makeingROC"
           :disabled="(makeingROC == true)">getChart</el-button>
         <el-button type="primary" @click="getROC">test</el-button>
         <div class="chart">
@@ -33,11 +43,12 @@ import { ref, computed, watch } from 'vue'
 import { Plus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { FileApi } from '@/api';
-const list = ref(['请选择数据集...'])
-const dataUid = ref()//数据集id
+const list = ref([''])
+const dataId = ref()//数据集id
 const makeingROC = ref(false)
 const ROCPath = ref()//ROC存储url
 const IsROCExist = ref(false)//判断ROC是否存在
+const uid = ref('')
 const tableData = computed(() => {
   return list.value.map(file => ({ name: file }));
 });
@@ -46,9 +57,10 @@ const emit = defineEmits<{
 }>()
 //打开弹窗方法
 const dialogVisible = ref(false)
-const open = () => {
+const open = (id: string) => {
   console.log("success")
   dialogVisible.value = true
+  uid.value = id
 }
 defineExpose({ open })
 //关闭弹窗
@@ -62,16 +74,16 @@ const downTest = () => {
   emit('closeDialog')
 }
 //测试
-const testData = (id: string) => {
+const chooseData = (id: string) => {
   FileApi.getTestData(id).then((res) => {
     console.log(res.data.data)
     list.value = res.data.data
   })
-  dataUid.value = id
+  dataId.value = id
 }
 //测试ROC绘图
-const testROC = async () => {
-  if (dataUid.value == undefined) {
+const drawROC = async () => {
+  if (dataId.value == undefined) {
     ElMessage.error("请先选择数据集")
     return
   }
@@ -79,7 +91,7 @@ const testROC = async () => {
   makeingROC.value = true
   ElMessage.success('正在绘制ROC图')
   try {
-    const res = await FileApi.makeROC(dataUid.value);
+    const res = await FileApi.makeROC(dataId.value, uid.value);
     getROC()
     console.log(res)
   } catch (error) {

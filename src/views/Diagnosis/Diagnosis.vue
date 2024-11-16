@@ -8,95 +8,97 @@
       <p title="按钮进度显示">Button progress display:</p>
       <el-progress :percentage="progress" class="el-progress"></el-progress>
       <div class="steps-description">
-        <span  :class="{ show: progress >= 33 }">First step: Upload</span>
-        <span  :class="{ show: progress >= 66 }">Second step: Inference</span>
-        <span  :class="{ show: progress >= 100 }">Third step: Description</span>
+        <span :class="{ show: progress >= 33 }">First step: Upload</span>
+        <span :class="{ show: progress >= 66 }">Second step: Inference</span>
+        <span :class="{ show: progress >= 100 }">Third step: Description</span>
       </div>
     </div>
 
-  <div class="content"> 
-    <div class="content1">
-      <div class="content-left">
-        <div class="info">
-          <div class="brfore">
-            <div class="content-introduction">
-              <p>information………</p>
-            </div>
-            <div class="content-information">
-              <div>
-                <el-button type="primary" v-loading="uploading" :disabled="(uploading == true)" @click="openUpload('.csv')" class="upload-button">
-                  <span title="CSV文件上传">csv File upload</span>
-                </el-button>
-                <span class="file-name">当前文件：{{ fileName }}</span>
-                <el-button type="primary" v-loading="testing" :disabled="(testing == true)" @click="openSystem">
-                  Test_System
-                </el-button>
+    <div class="content">
+      <div class="content1">
+        <div class="content-left">
+          <div class="info">
+            <div class="brfore">
+              <div class="content-introduction">
+                <p>information………</p>
               </div>
-              <br />
-              <div>
-                <el-button class="button1"type="primary" :plain="true" v-loading="submitting" :disabled="(submitting == true)" @click="submitPath" title="submit出错提示">Submit</el-button>
-                <el-button type="primary" :plain="true" @click="getPredict" titl e="Description" v-loading="perdicting"
-                :disabled="(perdicting == true)">Description</el-button>
-              </div>
-              <div>
-                <button class="content-export-button" >Report export</button>
+              <div class="content-information">
+                <div>
+                  <el-button type="primary" v-loading="uploading" :disabled="(uploading == true)"
+                    @click="openUpload('.csv')" class="upload-button">
+                    <span title="CSV文件上传">csv File upload</span>
+                  </el-button>
+                  <span class="file-name">当前文件：{{ fileName }}</span>
+                  <el-button type="primary" v-loading="testing" :disabled="(testing == true)" @click="openSystem">
+                    Test_System
+                  </el-button>
+                </div>
+                <br />
+                <div>
+                  <el-button class="button1" type="primary" :plain="true" v-loading="submitting"
+                    :disabled="(submitting == true)" @click="submitPath" title="submit出错提示">Submit</el-button>
+                  <el-button type="primary" :plain="true" @click="getPredict" titl e="Description"
+                    v-loading="perdicting" :disabled="(perdicting == true)">Description</el-button>
+                </div>
+                <div>
+                  <button class="content-export-button">Report export</button>
+                </div>
               </div>
             </div>
           </div>
+          <div class="content-left-button">
+            <el-button class="button3" @click="pathologybutton" title="病理等级输出">Pathology Grade Output:</el-button>
+          </div>
+          <div v-if="pathologyGrade !== null" class="pathology-info" @click="pathologybutton">
+            {{ pathologyGrade }}
+          </div>
+          <div v-else class="pathology-info" @click="pathologybutton">
+            <span>等待预测病理阶段</span>
+          </div>
         </div>
-        <div class="content-left-button">
-          <el-button class="button3" @click="pathologybutton" title="病理等级输出">Pathology Grade Output:</el-button>
-        </div>
-        <div v-if="pathologyGrade !== null" class="pathology-info" @click="pathologybutton">
-          {{ pathologyGrade }}
-        </div>
-        <div v-else class="pathology-info" @click="pathologybutton">
-          <span>等待预测病理阶段</span>
+        <div class="content-left-console">
+          <div class="console">
+            <div class="console-header">
+              <h3>Console</h3>
+            </div>
+            <div class="console-body" ref="consoleBody">
+              <div class="console-output" v-for="(message, index) in consoleMessages" :key="index">
+                {{ message }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="content-left-console">
-        <div class="console">
-          <div class="console-header">
-            <h3>Console</h3>
-          </div>
-          <div class="console-body" ref="consoleBody">
-            <div class="console-output" v-for="(message, index) in consoleMessages" :key="index">
-              {{ message }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="content2">
-      <div class="content-right">
-        <div class="content-right-img" ref="viewerContainer">
+      <div class="content2">
+        <div class="content-right">
+          <div class="content-right-img" ref="viewerContainer">
             <img v-if="IsGRNExist" :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image"
               @click="openViewer" />
             <span v-else>GRN图正在等待绘制...</span>
-        </div>
-        <div class="content-right-info">
-          <div class="content-GRN-button">
-            <button class="content-GRN-button1">GRN-1</button>
-            <button class="content-GRN-button2">GRN-2</button>
           </div>
-          <div class="content-GRN-info">
-            <p>网络图节点数量：{{ PointNumber }}</p>
-            <p>网络图边数量：{{ SideNumber }}</p>
-            <p>模块数量：{{ ModNumber }}</p>
-          </div>
-          <div class="content-GRN-export">
-            <button class="content-GRN-export-button"  title="下载图片"  @click="imageload()">Picture export</button>
+          <div class="content-right-info">
+            <div class="content-GRN-button">
+              <button class="content-GRN-button1">GRN-1</button>
+              <button class="content-GRN-button2">GRN-2</button>
+            </div>
+            <div class="content-GRN-info">
+              <p>网络图节点数量：{{ PointNumber }}</p>
+              <p>网络图边数量：{{ SideNumber }}</p>
+              <p>模块数量：{{ ModNumber }}</p>
+            </div>
+            <div class="content-GRN-export">
+              <button class="content-GRN-export-button" title="下载图片" @click="imageload()">Picture export</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div> 
-    
+
     <el-dialog :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
-        <div ref="viewerContainer">
-          <img :src="PngPath" alt="无法加载" class="viewer-image" @click="openViewer" />
-        </div>
+      <div ref="viewerContainer">
+        <img :src="PngPath" alt="无法加载" class="viewer-image" @click="openViewer" />
+      </div>
     </el-dialog>
 
     <footer>
@@ -114,9 +116,9 @@
 </template>
 
 <script setup lang="ts">
-import"@/router/jquery-2.1.1.min.js";
-import"@/router/particle-1.1.min.js";
-import"@/router/diagnosis.js";
+import "@/router/jquery-2.1.1.min.js";
+import "@/router/particle-1.1.min.js";
+import "@/router/diagnosis.js";
 import { ElMessage, ElNotification, ElProgress, ElDialog } from 'element-plus'
 import ImportFile from './element/importFile.vue'
 import TestSystem from './element/testSystem.vue'
@@ -175,8 +177,14 @@ const closeUpload = () => {
 //打开System弹窗
 const RefSystem = ref()
 const openSystem = () => {
-  testing.value = true
-  RefSystem.value.open()
+  if (uid.value) {
+    testing.value = true
+    RefSystem.value.open(uid.value)
+  } else {
+    ElMessage.error("打开失败")
+    console.log("未连接SSE")
+  }
+
 }
 //关闭System弹窗
 const closeSystem = () => {
@@ -201,9 +209,9 @@ const submitPath = async () => {
     console.log('正在绘制图片', fileName.value, uid.value)
     const res = await FileApi.makeGrn(fileName.value, uid.value); // 上传文件名
     console.log("GRN图绘制成功:", res);
-    progress.value=66; // 绘图后进度条前进到2/3
+    progress.value = 66; // 绘图后进度条前进到2/3
     ElMessage.success(`正在绘制GRN图`);
-    acquireGrn()
+    await acquireGrn()
     PointNumber.value = res.data.data['网络图节点数量'];
     SideNumber.value = res.data.data['网络图边数量'];
     ModNumber.value = res.data.data['模块数量'];
@@ -291,7 +299,7 @@ const getPredict = async () => {
   // if (progress.value < 33) {
   // ElMessage.warning('Please upload a file first.');
   // } else {
-    perdicting.value = true
+  perdicting.value = true
   try {
     console.log(fileName.value)
     ElMessage.success('正在预测病理阶段')
@@ -388,10 +396,11 @@ const scrollToBottom = () => {
 //连接SSE
 const ConnectSSE = () => {
   CloseSSE();
-  uid.value = 123
-  eventSource = new EventSource(`http://121.41.52.142:5090/sse/createSse?uid=${uid.value}`);
+  uid.value = '001'
+
+  eventSource = new EventSource(`http://120.26.160.25:5090/sse/createSse?uid=${uid.value}`);
   eventSource.onopen = function (event) {
-    console.log('SSE链接成功');
+    console.log('SSE链接成功,uid:', uid.value);
   }
   eventSource.onmessage = function (event) {
     if (event.data) {
@@ -413,39 +422,41 @@ const CloseSSE = () => {
   }
 };
 
-    // 下载图片
-    function downloadByBlob(url, name) {
-        let image = new Image();
-        image.setAttribute('crossOrigin', 'anonymous');
-        image.src = url;
-        image.onload = () => {
-            let canvas = document.createElement('canvas');
-            canvas.width = image.width;
-            canvas.height = image.height;
-            let ctx = canvas.getContext('2d');
-            ctx.drawImage(image, 0, 0, image.width, image.height);
-            canvas.toBlob((blob) => {
-                let url = URL.createObjectURL(blob);
-                download(url, name);
-                // 用完释放URL对象
-                URL.revokeObjectURL(url);
-            }, 'image/png');
-        }
-    }
-
-    function download(href, name) {
-        let eleLink = document.createElement('a');
-        eleLink.download = name;
-        eleLink.href = href;
-        document.body.appendChild(eleLink);
-        eleLink.click();
-        eleLink.remove();
-    }
-const  imageload=()=>{
-  downloadByBlob('PngPath','GRN-picture');
-  console.log('GRN-picture下载成功！');
+// 下载图片
+function downloadByBlob(url, name) {
+  let image = new Image();
+  image.setAttribute('crossOrigin', 'anonymous');
+  image.src = url;
+  image.onload = () => {
+    let canvas = document.createElement('canvas');
+    canvas.width = image.width;
+    canvas.height = image.height;
+    let ctx = canvas.getContext('2d');
+    ctx.drawImage(image, 0, 0, image.width, image.height);
+    canvas.toBlob((blob) => {
+      let url = URL.createObjectURL(blob);
+      download(url, name);
+      // 用完释放URL对象
+      URL.revokeObjectURL(url);
+    }, 'image/png');
+  }
 }
 
+function download(href, name) {
+  let eleLink = document.createElement('a');
+  eleLink.download = name;
+  eleLink.href = href;
+  document.body.appendChild(eleLink);
+  eleLink.click();
+  eleLink.remove();
+}
+const imageload = () => {
+  downloadByBlob('PngPath', 'GRN-picture');
+  console.log('GRN-picture下载成功！');
+}
+onMounted(async () => {
+  ConnectSSE()
+});
 </script>
 <style scoped>
 @import '@/assets/base.css';
