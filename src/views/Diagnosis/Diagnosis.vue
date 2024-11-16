@@ -51,7 +51,7 @@
                     </div>
                     <div class="function-area2">
                       <div class="content-left-button">
-                        <el-button class="button3" @click="pathologybutton" title="病理等级输出">Pathology Grade
+                        <el-button class="button3" title="病理等级输出">Pathology Grade
                           Output:</el-button>
                       </div>
                       <div v-if="pathologyGrade !== null" class="pathology-info" @click="pathologybutton">
@@ -73,33 +73,26 @@
             <div class="console-header">
               <h3>Console</h3>
             </div>
-            <div v-if="pathologyGrade !== null" class="pathology-info" @click="pathologybutton">
-              {{ pathologyGrade }}
-            </div>
-            <div v-else class="pathology-info" @click="pathologybutton">
-              <span>等待预测病理阶段</span>
-            </div>
-          </div>
-          <div class="content-left-console">
-            <div class="console">
-              <div class="console-header">
-                <h3>Console</h3>
-              </div>
-              <div class="console-body" ref="consoleBody">
-                <div class="console-output" v-for="(message, index) in consoleMessages" :key="index">
-                  {{ message }}
-                </div>
+            <div class="console-body" ref="consoleBody">
+              <div class="console-output" v-for="(message, index) in consoleMessages" :key="index">
+                {{ message }}
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="content2">
-          <div class="content-right">
-            <div class="content-right-img" ref="viewerContainer">
-              <img v-if="IsGRNExist" :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image"
-                @click="openViewer" />
-              <span v-else>GRN图正在等待绘制...</span>
+      <div class="content2">
+        <div class="content-right">
+          <div class="content-right-img" ref="viewerContainer">
+            <img v-if="IsGRNExist" :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image"
+              @click="openViewer" />
+            <span v-else>GRN图正在等待绘制...</span>
+          </div>
+          <div class="content-right-info">
+            <div class="content-GRN-button">
+              <button class="content-GRN-button1">GRN-1</button>
+              <button class="content-GRN-button2">GRN-2</button>
             </div>
             <div class="content-GRN-info">
               <p>网络图节点数量：{{ PointNumber }}</p>
@@ -112,26 +105,26 @@
           </div>
         </div>
       </div>
-
-      <el-dialog :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
-        <div ref="viewerContainer">
-          <img :src="PngPath" alt="无法加载" class="viewer-image" @click="openViewer" />
-        </div>
-      </el-dialog>
-
-      <footer>
-        <ul>
-          <li><a href="/" title="首页">Index</a></li>
-          <li><a href="/background" title="背景情况介绍">Background</a></li>
-          <li><a href="/description" title="辅助诊断AI系统简介">Description</a></li>
-        </ul>
-        <p>Copyright © 2024.zstu.digital medicine All rights reserved.</p>
-      </footer>
     </div>
-    <div id="particles-container" class="myElement"></div>
-    <ImportFile ref="Refupload" @getFile="getFileName" @closeDialog="closeUpload" />
-    <TestSystem ref="RefSystem" @closeDialog="closeSystem" />
+
+    <el-dialog :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
+      <div ref="viewerContainer">
+        <img :src="PngPath" alt="无法加载" class="viewer-image" @click="openViewer" />
+      </div>
+    </el-dialog>
+
+    <footer>
+      <ul>
+        <li><a href="/" title="首页">Index</a></li>
+        <li><a href="/background" title="背景情况介绍">Background</a></li>
+        <li><a href="/description" title="辅助诊断AI系统简介">Description</a></li>
+      </ul>
+      <p>Copyright © 2024.zstu.digital medicine All rights reserved.</p>
+    </footer>
   </div>
+  <div id="particles-container" class="myElement"></div>
+  <ImportFile ref="Refupload" @getFile="getFileName" @closeDialog="closeUpload" />
+  <TestSystem ref="RefSystem" @closeDialog="closeSystem" />
 </template>
 
 <script setup lang="ts">
@@ -319,12 +312,13 @@ const getPredict = async () => {
   // ElMessage.warning('Please upload a file first.');
   // } else {
   perdicting.value = true
+  ConnectSSE()
   try {
     console.log(fileName.value)
     ElMessage.success('正在预测病理阶段')
-    const res = await FileApi.getHealthMess(fileName.value) // 确保文件上传成功后再继续
+    const res = await FileApi.getHealthMess(fileName.value, uid.value) // 确保文件上传成功后再继续
     console.log(res)
-    const grade = Number(res.data.data)// 服务器返回的纯文本数字
+    const grade = Number(res.data.data.data)// 服务器返回的纯文本数字
     console.log('预测病理等级为:', grade)
     pathologyGrade.value = gradeDescriptions[grade + 1] // 使用映射获取病理等级描述
     ElMessage.success('病理阶段预测成功')
@@ -342,7 +336,7 @@ const getPredict = async () => {
 const getpathologygrade = async () => {
   try {
     // 从服务器获取病理等级
-    const response = await FileApi.getHealthMess(fileName.value)
+    const response = await FileApi.getHealthMess(fileName.value, uid.value)
     const grade = await response.data // 服务器返回的纯文本数字
     pathologyGrade.value = gradeDescriptions[grade] // 使用映射获取病理等级描述
     progress.value = 100 // 获取病理等级后进度条前进到100%
@@ -516,5 +510,5 @@ onMounted(() => {
 });
 </script>
 <style scoped>
-@import '@/assets/base.css';
+@import '../../assets/base.css';
 </style>

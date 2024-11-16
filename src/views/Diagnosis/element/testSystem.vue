@@ -7,7 +7,7 @@
         </div>
         <el-button type="primary" @click="chooseData('1')">数据集一</el-button>
         <el-button type="primary" @click="chooseData('2')">数据集二</el-button>
-        <el-table :data="tableData" style="width: 100%">
+        <el-table :data="tableData" style="width: 100%" max-height="528px">
           <el-table-column prop="name" width="250">
             <template #header>
               <!-- 不渲染任何内容，从而隐藏表头 -->
@@ -43,7 +43,7 @@ import { ref, computed, watch } from 'vue'
 import { Plus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { FileApi } from '@/api';
-const list = ref([''])
+const list = ref([' '])
 const dataId = ref()//数据集id
 const makeingROC = ref(false)
 const ROCPath = ref()//ROC存储url
@@ -74,12 +74,22 @@ const downTest = () => {
   emit('closeDialog')
 }
 //测试
-const chooseData = (id: string) => {
-  FileApi.getTestData(id).then((res) => {
+const chooseData = async (id: string) => {
+  // FileApi.getTestData(id).then((res) => {
+  //   console.log(res.data.data)
+  //   list.value = res.data.data
+  // })
+  if (id == '2') {
+    ElMessage.error("暂不支持数据集二")
+    return
+  }
+  if (id) {
+    const res = await FileApi.getTestData(id)
     console.log(res.data.data)
     list.value = res.data.data
-  })
-  dataId.value = id
+    dataId.value = id
+  }
+
 }
 //测试ROC绘图
 const drawROC = async () => {

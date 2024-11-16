@@ -28,13 +28,13 @@ export const FileApi = {
     }
   },
   //预测病理
-  getHealthMess: async (data) => {
-    if (!data) {
+  getHealthMess: async (fileName: string, uid: string) => {
+    if (!fileName) {
       return Promise.reject(new Error('Data is required'));
     }
     try {
       // return await Axios.post('/adgrn/run?filePath=', { params: data });
-      return await Axios.post('/prediction/run', null, { params: { fileName: data } });
+      return await Axios.post('/prediction/run', null, { params: { fileName: fileName, uid: uid } });
     } catch (error) {
       console.error('Error getting PNG:', error);
       throw error;
@@ -69,9 +69,15 @@ export const FileApi = {
   },
   //获取测试数据集
   getTestData: async (id: string) => {
-    if (id == '1') { return await Axios.get('/prediction/test1/name'); }
-    else if (id == '2') { return await Axios.get('/prediction/test2/name'); }
-    else return
+    if (!id) {
+      ElMessage.error("getTestData_id不存在")
+    }
+    try {
+      return await Axios.get('/prediction/getFileNames', { params: { test_code: id } })
+    } catch (error) {
+      ElMessage.error("获取数据集失败：", error)
+      console.log("获取数据集失败：", error)
+    }
 
   },
   //绘制ROC
