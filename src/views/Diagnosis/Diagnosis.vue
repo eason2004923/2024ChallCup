@@ -9,7 +9,7 @@
       <el-progress :percentage="progress" class="el-progress"></el-progress>
       <div class="steps-description">
         <span :class="{ show: progress >= 33 }">First step: Upload</span>
-        <span :class="{ show: progress >= 66 }">Second step: Inference</span>
+        <span :class="{ show: progress >= 66 }">Second step: Submit</span>
         <span :class="{ show: progress >= 100 }">Third step: Description</span>
       </div>
     </div>
@@ -40,7 +40,7 @@
                   <div class="function-area">
                     <div class="function-area1">
                       <el-button class="button1" type="primary" :plain="true" v-loading="submitting"
-                        :disabled="(submitting == true)" @click="submitPath" title="submit出错提示">Submit</el-button>
+                        :disabled="(submitting == true)" @click="submitPath" title="submit">Submit</el-button>
                       <el-button type="primary" :plain="true" @click="getPredict" title="Description"
                         v-loading="perdicting" id="function-area1-description"
                         :disabled="(perdicting == true)">Description</el-button>
@@ -84,10 +84,11 @@
       <div class="content2">
         <div class="content-right">
           <div class="content-right-img" ref="viewerContainer">
-            <img v-if="IsGRNExist" :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image"
-              @click="openViewer" />
-            <span v-else>GRN图正在等待绘制...</span>
-            <!-- <img src="/public/Grn.png" alt=""> -->
+            <div class="content-right-img-box">
+                <img v-if="IsGRNExist" :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image" @click="openViewer" />
+                <span v-else>GRN图正在等待绘制...</span>
+                <!-- <img src="/public/Grn.png" alt=""> -->
+            </div>
           </div>
           <div class="content-right-info">
             <div class="content-GRN-button">
