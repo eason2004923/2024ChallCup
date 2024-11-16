@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <h1>Diagnosis</h1>
+      <h1>Medical AI based dementia diagnosis</h1>
     </header>
 
     <div class="flow-path">
@@ -15,7 +15,7 @@
     </div>
 
     <div class="content">
-      <div class="content1">
+      <div class="content1">  
         <div class="content-left">
           <div class="info">
             <div class="brfore">
@@ -51,13 +51,12 @@
                     </div>
                     <div class="function-area2">
                       <div class="content-left-button">
-                        <el-button class="button3" title="病理等级输出">Pathology Grade
-                          Output:</el-button>
+                        <h3>Pathology Grade Output:</h3>
                       </div>
-                      <div v-if="pathologyGrade !== null" class="pathology-info" @click="pathologybutton">
+                      <div v-if="pathologyGrade !== null" class="pathology-info">
                         {{ pathologyGrade }}
                       </div>
-                      <div v-else class="pathology-info" @click="pathologybutton">
+                      <div v-else class="pathology-info">
                         <span>等待预测病理阶段</span>
                       </div>
                     </div>
@@ -88,6 +87,7 @@
             <img v-if="IsGRNExist" :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image"
               @click="openViewer" />
             <span v-else>GRN图正在等待绘制...</span>
+            <!-- <img src="/public/Grn.png" alt=""> -->
           </div>
           <div class="content-right-info">
             <div class="content-GRN-button">
