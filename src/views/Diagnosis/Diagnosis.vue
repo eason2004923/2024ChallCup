@@ -18,7 +18,6 @@
       <div class="content1">  
         <div class="content-left">
           <div class="info">
-            <div class="brfore">
               <div class="content-introduction">
               </div>
               <div class="content-information">
@@ -33,8 +32,6 @@
                     Test_System
                   </el-button>
                 </div>
-                <span></span>
-                <br />
                 <div class="Functional-analysis">
                   <p>Functional analysis</p><span></span>
                   <div class="function-area">
@@ -64,7 +61,6 @@
 
                 </div>
               </div>
-            </div>
           </div>
         </div>
         <div class="content-left-console">
