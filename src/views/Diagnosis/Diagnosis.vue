@@ -15,52 +15,52 @@
     </div>
 
     <div class="content">
-      <div class="content1">  
+      <div class="content1">
         <div class="content-left">
           <div class="info">
-              <div class="content-introduction">
+            <div class="content-introduction">
+            </div>
+            <div class="content-information">
+              <div class="data-upload">
+                <p>Upload data</p>
+                <el-button type="primary" v-loading="uploading" :disabled="(uploading == true)"
+                  @click="openUpload('.csv')" class="upload-button">
+                  <span title="CSV文件上传">Csv File Upload</span>
+                </el-button>
+                <span class="file-name">The current file：{{ fileName }}</span>
+                <el-button type="primary" v-loading="testing" :disabled="(testing == true)" @click="openSystem">
+                  Test_System
+                </el-button>
               </div>
-              <div class="content-information">
-                <div class="data-upload">
-                  <p>Upload data</p>
-                  <el-button type="primary" v-loading="uploading" :disabled="(uploading == true)"
-                    @click="openUpload('.csv')" class="upload-button">
-                    <span title="CSV文件上传">Csv File Upload</span>
-                  </el-button>
-                  <span class="file-name">The current file：{{ fileName }}</span>
-                  <el-button type="primary" v-loading="testing" :disabled="(testing == true)" @click="openSystem">
-                    Test_System
-                  </el-button>
-                </div>
-                <div class="Functional-analysis">
-                  <p>Functional analysis</p><span></span>
-                  <div class="function-area">
-                    <div class="function-area1">
-                      <el-button class="button1" type="primary" :plain="true" v-loading="submitting"
-                        :disabled="(submitting == true)" @click="submitPath" title="submit">Submit</el-button>
-                      <el-button type="primary" :plain="true" @click="getPredict" title="Description"
-                        v-loading="perdicting" id="function-area1-description"
-                        :disabled="(perdicting == true)">Description</el-button>
-                      <div>
-                        <button class="content-export-button" title="报告下载" @click="downloadReport">Report
-                          Export</button>
-                      </div>
-                    </div>
-                    <div class="function-area2">
-                      <div class="content-left-button">
-                        <h3>Pathology Grade Output:</h3>
-                      </div>
-                      <div v-if="pathologyGrade !== null" class="pathology-info">
-                        {{ pathologyGrade }}
-                      </div>
-                      <div v-else class="pathology-info">
-                        <span>等待预测病理阶段</span>
-                      </div>
+              <div class="Functional-analysis">
+                <p>Functional analysis</p><span></span>
+                <div class="function-area">
+                  <div class="function-area1">
+                    <el-button class="button1" type="primary" :plain="true" v-loading="submitting"
+                      :disabled="(submitting == true)" @click="submitPath" title="submit">Submit</el-button>
+                    <el-button type="primary" :plain="true" @click="getPredict" title="Description"
+                      v-loading="perdicting" id="function-area1-description"
+                      :disabled="(perdicting == true)">Description</el-button>
+                    <div>
+                      <button class="content-export-button" title="报告下载" @click="downloadReport">Report
+                        Export</button>
                     </div>
                   </div>
-
+                  <div class="function-area2">
+                    <div class="content-left-button">
+                      <h3>Pathology Grade Output:</h3>
+                    </div>
+                    <div v-if="pathologyGrade !== null" class="pathology-info">
+                      {{ pathologyGrade }}
+                    </div>
+                    <div v-else class="pathology-info">
+                      <span>等待预测病理阶段</span>
+                    </div>
+                  </div>
                 </div>
+
               </div>
+            </div>
           </div>
         </div>
         <div class="content-left-console">
@@ -70,7 +70,12 @@
             </div>
             <div class="console-body" ref="consoleBody">
               <div class="console-output" v-for="(message, index) in consoleMessages" :key="index">
-                {{ message }}
+                <!-- {{ message }} -->
+                <span v-for="(part, i) in splitMessage(message)" :key="i"
+                  :style="{ color: i === 1 || i === 2 ? 'blue' : 'inherit' }">
+                  {{ part }}
+                  <span v-if="i !== splitMessage(message).length - 1"> </span> <!-- 添加空格 -->
+                </span>
               </div>
             </div>
           </div>
@@ -81,9 +86,10 @@
         <div class="content-right">
           <div class="content-right-img" ref="viewerContainer">
             <div class="content-right-img-box">
-                <img v-if="IsGRNExist" :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image" @click="openViewer" />
-                <span v-else>GRN图正在等待绘制...</span>
-                <!-- <img src="/public/Grn.png" alt=""> -->
+              <img v-if="IsGRNExist" :src="PngPath" alt="模型生成GRN图" class="viewer-container viewer-image"
+                @click="openViewer" />
+              <span v-else>GRN图正在等待绘制...</span>
+              <!-- <img src="/public/Grn.png" alt=""> -->
             </div>
           </div>
           <div class="content-right-info">
@@ -145,7 +151,7 @@ const fileName = ref('The file was not entered')
 const filePath = ref('NULL')
 const PngPath = ref('../public/tutor.png')
 const RefFile_loom = ref()
-const consoleMessages = ref([])
+const consoleMessages = ref(['div is separed 5', 'div is separed 5', 'div is separed 5'])
 const pathologyGrade = ref(null) // 添加病理等级响应式数据属性
 const dialogVisible = ref(false);
 const viewerInstance = ref(null);
@@ -328,7 +334,10 @@ const getPredict = async () => {
   // }
 };
 
-
+// 方法：将消息拆分成多个部分
+const splitMessage = (message) => {
+  return message.split(' ');
+};
 // 获取病理等级
 const getpathologygrade = async () => {
   try {
