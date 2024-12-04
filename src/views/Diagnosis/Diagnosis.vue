@@ -9,8 +9,8 @@
       <el-progress :percentage="progress" class="el-progress"></el-progress>
       <div class="steps-description">
         <span :class="{ show: progress >= 33 }">First step: Upload</span>
-        <span :class="{ show: progress >= 66 }">Second step: Submit</span>
-        <span :class="{ show: progress >= 100 }">Third step: Description</span>
+        <span :class="{ show: progress >= 66 }">Second step: Inference</span>
+        <span :class="{ show: progress >= 100 }">Thrid step: Assessment</span>
       </div>
     </div>
 
@@ -37,12 +37,13 @@
                 <div class="function-area">
                   <div class="function-area1">
                     <el-button class="button1" type="primary" :plain="true" v-loading="submitting"
-                      :disabled="(submitting == true)" @click="submitPath" title="submit">Submit</el-button>
+                      :disabled="(submitting == true)" @click="submitPath" title="submit">Inference</el-button>
                     <el-button type="primary" :plain="true" @click="getPredict" title="Description"
                       v-loading="perdicting" id="function-area1-description"
-                      :disabled="(perdicting == true)">Description</el-button>
+                      :disabled="(perdicting == true)">Assessment</el-button>
                     <div>
-                      <button class="content-export-button" title="报告下载" @click="downloadReport">Report
+                      <button class="content-export-button" title="报告下载" @click="downloadReport"
+                        v-loading="gettingReport" :disabled="(gettingReport == true)">Report
                         Export</button>
                     </div>
                   </div>
@@ -151,7 +152,7 @@ const fileName = ref('The file was not entered')
 const filePath = ref('NULL')
 const PngPath = ref('../public/tutor.png')
 const RefFile_loom = ref()
-const consoleMessages = ref(['div is separed 5', 'div is separed 5', 'div is separed 5'])
+const consoleMessages = ref(['欢迎使用本系统'])
 const pathologyGrade = ref(null) // 添加病理等级响应式数据属性
 const dialogVisible = ref(false);
 const viewerInstance = ref(null);
@@ -160,6 +161,7 @@ const uploading = ref(false)//csv upload按钮的加载显示
 const testing = ref(false)//test_System按钮的加载显示
 const perdicting = ref(false)//desrciption按钮加载显示
 const submitting = ref(false)//submit按钮加载显示
+const gettingReport = ref(false)//Report_Export按钮加载显示
 const particleBackground = ref(null);
 let eventSource//SSE连接
 const uid = ref()
@@ -183,7 +185,6 @@ const Refupload = ref()
 const openUpload = (tool: string) => {
   uploading.value = true
   Refupload.value.open(tool)
-  progress.value = 33 // 获取病理等级后进度条前进到1/3
 }
 //关闭upload弹窗
 const closeUpload = () => {
@@ -210,30 +211,33 @@ const closeSystem = () => {
 const getFileName = async (tool) => {
   console.log(tool)
   fileName.value = tool
+  progress.value = 33 // 获取病理等级后进度条前进到33%
 }
 //开始绘图
 const submitPath = async () => {
-  // if (fileName.value == "The file was not entered") {
-  //   ElMessage.error('请先上传文件')
-  //   return
-  // }
+  if (fileName.value == "The file was not entered") {
+    ElMessage.warning('请先上传文件')
+    return
+  }
   submitting.value = true
   IsGRNExist.value = false
   try {
     ConnectSSE()
     console.log('正在绘制图片', fileName.value, uid.value)
+    ElMessage.success(`正在绘制GRN图`);
     const res = await FileApi.makeGrn(fileName.value, uid.value); // 上传文件名
     console.log("GRN图绘制成功:", res);
     progress.value = 66; // 绘图后进度条前进到2/3
-    ElMessage.success(`正在绘制GRN图`);
     await acquireGrn()
-    PointNumber.value = res.data.data['网络图节点数量'];
-    SideNumber.value = res.data.data['网络图边数量'];
-    ModNumber.value = res.data.data['模块数量'];
+    PointNumber.value = res.data.data.data['网络图节点数量'];
+    SideNumber.value = res.data.data.data['网络图边数量'];
+    ModNumber.value = res.data.data.data['模块数量'];
+    ElMessage.success(`成功绘制GRN图`);
   } catch (error) {
     submitting.value = false
     console.error('Error makeing PNG:', error);
     ElMessage.error('Error makeing PNG:', error);
+    progress.value = 33 // 进度条前进到33%
   }
   submitting.value = false
 };
@@ -277,22 +281,34 @@ const acquireGrn = async () => {
     PngPath.value = URL.createObjectURL(blob);//生成对象URLPngPath.value=imageUrl;//保存图像路径
     console.log("Grn图url:", PngPath.value);//绘图后进度条更新到66%downloadBlob(blob,'image.png');//使用downloadBlob下载Blob} catch(error){
     IsGRNExist.value = true
-    downloadBlob(blob, '1.png')
+    downloadBlob(blob, 'GRN.png')
   } catch (error) {
     console.log(error)
   }
   submitting.value = false
 }
 const downloadBlob = (blob, filename) => {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = url;
-  a.download = filename || 'download';
-  document.body.appendChild(a);
-  a.click();
-  window.URL.revokeObjectURL(url); // 释放 URL 对象
-  document.body.removeChild(a);
+  try {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = filename || 'download';
+    document.body.appendChild(a);
+    setTimeout(() => {
+      a.click();
+      ElMessage.success('下载成功')
+      // 再次使用 setTimeout 来延迟 URL 的释放
+      setTimeout(() => {
+        console.log('Revoke URL and remove element...');
+        window.URL.revokeObjectURL(url); // 释放 URL 对象
+        document.body.removeChild(a);
+      }, 100); // 等待足够的时间让文件开始下载
+    }, 100); // 给浏览器一些时间来处理点击事件
+  } catch (error) {
+    ElMessage.error('下载出错')
+    console.log('下载出错', error)
+  }
 };
 // 定义病理等级的描述
 const gradeDescriptions = {
@@ -308,12 +324,13 @@ const gradeDescriptions = {
 const getPredict = async () => {
 
   if (fileName.value == "The file was not entered") {
-    ElMessage.error('请先上传文件')
+    ElMessage.warning('请先上传文件')
     return
   }
-  // if (progress.value < 33) {
-  // ElMessage.warning('Please upload a file first.');
-  // } else {
+  if (progress.value < 66) {
+    ElMessage.warning('请先绘制GRN图');
+    return
+  }
   perdicting.value = true
   ConnectSSE()
   try {
@@ -325,10 +342,12 @@ const getPredict = async () => {
     console.log('预测病理等级为:', grade)
     pathologyGrade.value = gradeDescriptions[grade + 1] // 使用映射获取病理等级描述
     ElMessage.success('病理阶段预测成功')
+    progress.value = 100 // 进度条前进到100%
   } catch (error) {
     console.error('预测失败:', error);
-    ElMessage.error('预测失败');
     ElMessage.error('病理阶段预测失败');
+    progress.value = 66 // 进度条前进到66%
+
   }
   perdicting.value = false
   // }
@@ -345,7 +364,7 @@ const getpathologygrade = async () => {
     const response = await FileApi.getHealthMess(fileName.value, uid.value)
     const grade = await response.data // 服务器返回的纯文本数字
     pathologyGrade.value = gradeDescriptions[grade] // 使用映射获取病理等级描述
-    progress.value = 100 // 获取病理等级后进度条前进到100%
+    progress.value = 100 // 进度条前进到100%
   } catch (error) {
     console.error('获取病理等级失败:', error)
     ElMessage.error('无法获取病理等级')
@@ -417,7 +436,7 @@ const ConnectSSE = () => {
   CloseSSE();
   uid.value = '001'
 
-  eventSource = new EventSource(`http://120.26.160.25:5090/sse/createSse?uid=${uid.value}`);
+  eventSource = new EventSource(`http://121.40.222.218:5090/sse/createSse?uid=${uid.value}`);
   eventSource.onopen = function (event) {
     console.log('SSE链接成功,uid:', uid.value);
   }
@@ -490,25 +509,25 @@ const imageload = () => {
 
 //报告下载
 const downloadReport = async () => {
+  if (progress.value != 100) {
+    ElMessage.warning('请先完成预测')
+    return
+  }
   try {
-    // 发起请求到后端接口
-    const response = await fetch('/report/get');
-    if (!response.ok) {
-      throw new Error('网络响应错误');
-    }
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.style.display = 'none';
-    link.href = url;
-    // 设置下载文件名，假设文件名为report.pdf
-    link.download = 'report.pdf';
-    document.body.appendChild(link);
-    link.click();
-    window.URL.revokeObjectURL(url);
+    ElMessage.success('正在绘制Report~')
+    gettingReport.value = true
+    const res_make = await FileApi.makeReport(uid.value);
+    console.log("res_make:", res_make)
+    const res_get = await FileApi.getReport('1');
+    console.log("res_get:", res_get)
+    const blob = res_get.data;
+    console.log("blob:", blob)
+
+    downloadBlob(blob, 'report.pdf')
   } catch (error) {
-    console.error('下载报告失败:', error);
-    alert('报告下载失败，请稍后再试或联系我们。');
+    console.log("getReport_error:", error)
+  } finally {
+    gettingReport.value = false
   }
 };
 onMounted(() => {

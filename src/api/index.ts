@@ -98,6 +98,32 @@ export const FileApi = {
       throw (error)
     }
   },
+  //生成报告
+  makeReport: async (uid: string) => {
+    if (!uid) {
+      return Promise.reject(new Error('uid is required'));
+    }
+    try {
+      // return await Axios.post('/adgrn/run?filePath=', { params: data });
+      return await Axios.get('/report/create', { params: { uid: uid } });
+    } catch (error) {
+      console.error('Error making PNG:', error);
+      throw error;
+    }
+  },
+  //获取报告
+  getReport: async (mode: string) => {
+    if (!mode) {
+      return Promise.reject(new Error('mode is required'));
+    }
+    try {
+      // return await Axios.post('/adgrn/run?filePath=', { params: data });
+      return await Axios.get('/report/get', { params: { mode: mode }, responseType: 'blob' });
+    } catch (error) {
+      console.error('Error making PNG:', error);
+      throw error;
+    }
+  },
   //测试
   TestApi: async (data: string) => {
     return Axios.post('/adgrn/test', null, {
